@@ -361,3 +361,9 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/CabWebApi/appsettings.json
+/HotelBooking/appsettings.json
+/HotelWebApi/appsettings.json
+/RoomWebApi/appsettings.json
+/SearchWebApi/appsettings.json
+/UserWebApi/appsettings.json
