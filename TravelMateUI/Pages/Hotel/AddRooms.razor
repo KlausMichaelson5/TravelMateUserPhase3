@@ -1,10 +1,12 @@
 ﻿@page "/add-rooms/{hotelId:int}"
+@using Microsoft.AspNetCore.Authorization
 @using TravelMate2.Services
 @using TravelMate.Models
 @using TravelMateUI.Services
 @inject IRoomUIService RoomService
 @inject NavigationManager Navigation
 @layout MinimalLayout
+@attribute [Authorize(Roles = "hotel_owner")]
 <head>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" rel="stylesheet" />

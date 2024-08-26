@@ -1,4 +1,5 @@
 ﻿@page "/hotel-owner-home"
+@using Microsoft.AspNetCore.Authorization
 @using TravelMate2.Services
 @using TravelMate.Models
 @layout MinimalLayout
@@ -7,6 +8,7 @@
 @inject UserInfoService userInfoService
 @inject IJSRuntime JSRuntime
 @inject NavigationManager NavigationManager
+@attribute [Authorize(Roles = "hotel_owner")]
 
 <!DOCTYPE html>
 

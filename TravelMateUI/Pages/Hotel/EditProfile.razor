@@ -1,10 +1,13 @@
 ﻿@page "/edit-profile"
+@using Microsoft.AspNetCore.Authorization
 @using TravelMate.Models
 @using TravelMate2.Services
 @layout MinimalLayout
 @inject UserInfoService userInfoService
 @inject IUserUIService userUIService
 @inject NavigationManager NavigationManager
+@attribute [Authorize(Roles = "hotel_owner")]
+
 
 <!-- Include Bootstrap and Font Awesome -->
 <head>

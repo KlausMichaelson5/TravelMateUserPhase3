@@ -1,10 +1,13 @@
 ﻿@page "/hotel-rooms/{hotelId:int}"
+@using Microsoft.AspNetCore.Authorization
 @using TravelMate.Models
 @using TravelMate2.Services
 @using TravelMateUI.Services
 @* @layout MinimalLayout *@
 @inject IRoomUIService RoomService
 @inject NavigationManager NavigationManager
+@attribute [Authorize(Roles = "hotel_owner")]
+
 
 
 <div class="container mt-4">

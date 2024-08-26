@@ -1,10 +1,13 @@
 ﻿@page "/hotel-details/{hotelId:int}"
+@using Microsoft.AspNetCore.Authorization
 @using TravelMate.Models
 @using TravelMate2.Services
 @layout MinimalLayout
 @inject IHotelUIService HotelService
 @inject NavigationManager Navigation
 @inject UserInfoService userInfoService
+@attribute [Authorize(Roles = "hotel_owner")]
+
 
 <!-- Include Bootstrap and Font Awesome -->
 <head>
