@@ -367,3 +367,4 @@ FodyWeavers.xsd
 /RoomWebApi/appsettings.json
 /SearchWebApi/appsettings.json
 /UserWebApi/appsettings.json
+/PackageDll/Migrations
