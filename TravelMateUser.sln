@@ -41,6 +41,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CabBooking", "CabBooking\Ca
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CabBookingDll", "CabBookingDll\CabBookingDll.csproj", "{BD8C18F7-DD11-4E4C-A058-037EFE6B72F2}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdminMvcUi", "AdminMvcUi\AdminMvcUi.csproj", "{36F2ABB0-CAED-4648-AF13-B8D5B4970DB9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdminMvcUiTest", "AdminMvcUiTest\AdminMvcUiTest.csproj", "{6053E613-D4C8-4ADA-8FFC-A99508F6D234}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -123,6 +127,14 @@ Global
 		{BD8C18F7-DD11-4E4C-A058-037EFE6B72F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BD8C18F7-DD11-4E4C-A058-037EFE6B72F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BD8C18F7-DD11-4E4C-A058-037EFE6B72F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{36F2ABB0-CAED-4648-AF13-B8D5B4970DB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{36F2ABB0-CAED-4648-AF13-B8D5B4970DB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{36F2ABB0-CAED-4648-AF13-B8D5B4970DB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{36F2ABB0-CAED-4648-AF13-B8D5B4970DB9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6053E613-D4C8-4ADA-8FFC-A99508F6D234}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6053E613-D4C8-4ADA-8FFC-A99508F6D234}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6053E613-D4C8-4ADA-8FFC-A99508F6D234}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6053E613-D4C8-4ADA-8FFC-A99508F6D234}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
