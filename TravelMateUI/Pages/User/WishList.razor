@@ -36,7 +36,7 @@ else
                         <div class="card-body">
                             <h5 class="card-title">Hotel ID: @item.HotelId</h5>
                             <p class="card-text">Name : @item.HotelName</p>
-                            <p class="card-text">Img: <img src="./@item.HotelImage" /></p>
+                            <p class="card-text"> <img src="./@item.HotelImage" /></p>
                             <p class="card-text">Added on: @item.CreatedAt.ToShortDateString()</p>
                             <button class="btn btn-danger" @onclick="() => DeleteWishListItem(item.WishListId)">Delete</button>
                         </div>
