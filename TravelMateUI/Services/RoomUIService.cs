@@ -5,11 +5,11 @@ namespace TravelMateUI.Services
 {
     public interface IRoomUIService
     {
-        Task Add(Room room);
+        Task Add(Room room, int hotelId);
         Task<Room> Get(int id);
         Task Update(Room room, int id);
         Task Delete(int id);
-        Task<List<Room>> GetAll();
+        Task<List<Room>> GetAll(int hotelId);
         Task<List<Room>> GetAvailableRooms();
     }
     public class RoomUIService : IRoomUIService
@@ -22,9 +22,11 @@ namespace TravelMateUI.Services
             _httpClient.BaseAddress = new Uri("http://localhost:5191/api/");
         }
 
-        public async Task Add(Room room)
+        public async Task Add(Room room, int hotelId)
         {
-            await _httpClient.PostAsJsonAsync("rooms", room);
+            
+            room.HotelId = hotelId;
+            await _httpClient.PostAsJsonAsync($"rooms?hotelId={hotelId}", room);
         }
 
         public async Task<Room> Get(int id)
@@ -50,9 +52,9 @@ namespace TravelMateUI.Services
             await _httpClient.DeleteAsync($"rooms/{id}");
         }
 
-        public async Task<List<Room>> GetAll()
+        public async Task<List<Room>> GetAll(int hotelId)
         {
-            return await _httpClient.GetFromJsonAsync<List<Room>>("rooms/AllRooms");
+            return await _httpClient.GetFromJsonAsync<List<Room>>($"rooms/AllRooms?hotelId={hotelId}");
         }
 
         public async Task<List<Room>> GetAvailableRooms()

@@ -9,10 +9,10 @@ namespace RoomBookingDll.Services
 {
     public interface IRoomBookingService
     {
-        void AddNewRoom(Room room);
+        void AddNewRoom(Room room,int hotelId);
         void DeleteRoom(int roomId);
         Room GetRoomById(int roomId);
-        List<Room> GetAllRooms();
+        List<Room> GetAllRooms(int hotelId);
         List<Room> GetAvailableRooms();
         void UpdateRoom(Room room);
     }
@@ -26,8 +26,9 @@ namespace RoomBookingDll.Services
             _context = context;
         }
 
-        public void AddNewRoom(Room room)
+        public void AddNewRoom(Room room, int hotelId)
         {
+            room.HotelId = hotelId;
             _context.Rooms.Add(room);
             _context.SaveChanges();
         }
@@ -57,9 +58,9 @@ namespace RoomBookingDll.Services
             return room;
         }
 
-        public List<Room> GetAllRooms()
+        public List<Room> GetAllRooms(int hotelId)
         {
-            return _context.Rooms.ToList();
+            return _context.Rooms.Where(r=>r.HotelId == hotelId).ToList();
         }
 
         public List<Room> GetAvailableRooms()

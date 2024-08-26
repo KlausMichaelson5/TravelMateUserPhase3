@@ -22,6 +22,10 @@ namespace TravelMateUI
             builder.Services.AddTransient<IHotelUIService, HotelUIService>();
             builder.Services.AddTransient<ICabUIService, CabUIService>();
             builder.Services.AddTransient<ISearchUIService, SearchUIService>();
+            builder.Services.AddTransient<IRoomUIService, RoomUIService>();
+            builder.Services.AddTransient<IHotelBookingUIService, HotelBookingUIService>();
+            builder.Services.AddTransient<IWishListUIService, WishListUIService>();
+            builder.Services.AddTransient<IPackageProUIService, PackageProUIService>();
             await builder.Build().RunAsync();
         }
     }

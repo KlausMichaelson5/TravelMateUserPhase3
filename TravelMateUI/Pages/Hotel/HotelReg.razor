@@ -78,26 +78,30 @@
         <h2 class="text-center"><i class="fas fa-hotel"></i> Register Your Hotel</h2>
         <EditForm Model="@hotel" OnValidSubmit="RegisterHotel">
             <DataAnnotationsValidator />
-            <ValidationSummary />
+            @*  <ValidationSummary /> *@
 
             <div class="mb-3">
                 <label for="name" class="form-label">Hotel Name</label>
                 <InputText id="name" class="form-control" @bind-Value="hotel.Name" placeholder="Enter the hotel name" />
+                <ValidationMessage For="@(() => hotel.Name)" />
             </div>
 
             <div class="mb-3">
                 <label for="address" class="form-label">Address</label>
                 <InputText id="address" class="form-control" @bind-Value="hotel.Address" placeholder="Enter the address" />
+                <ValidationMessage For="@(() => hotel.Address)" />
             </div>
 
             <div class="mb-3">
                 <label for="city" class="form-label">City</label>
                 <InputText id="city" class="form-control" @bind-Value="hotel.City" placeholder="Enter the city" />
+                <ValidationMessage For="@(() => hotel.City)" />
             </div>
 
             <div class="mb-3">
                 <label for="state" class="form-label">State</label>
                 <InputText id="state" class="form-control" @bind-Value="hotel.State" placeholder="Enter the state" />
+                <ValidationMessage For="@(() => hotel.State)" />
             </div>
 
             <div class="mb-3">
@@ -109,16 +113,19 @@
                         <option value="@type">@type</option>
                     }
                 </InputSelect>
+                <ValidationMessage For="@(() => hotel.Country)" />
             </div>
 
             <div class="mb-3">
                 <label for="zipCode" class="form-label">Zip Code</label>
                 <InputText id="zipCode" class="form-control" @bind-Value="hotel.ZipCode" placeholder="Enter the zip code" />
+                <ValidationMessage For="@(() => hotel.ZipCode)" />
             </div>
 
             <div class="mb-3">
                 <label for="description" class="form-label">Description</label>
                 <InputTextArea id="description" class="form-control" @bind-Value="hotel.Description" rows="4" placeholder="Enter a brief description of the hotel" />
+                <ValidationMessage For="@(() => hotel.Description)" />
             </div>
 
             <div class="mb-3">
@@ -134,6 +141,7 @@
             <div class="mb-3">
                 <label for="rating" class="form-label">Rating</label>
                 <InputNumber id="rating" class="form-control" @bind-Value="hotel.Rating" placeholder="Enter the rating" />
+                <ValidationMessage For="@(() => hotel.Rating)" />
             </div>
 
             <div class="mb-3">
@@ -145,6 +153,7 @@
             <div class="mb-3">
                 <label for="hotelImage" class="form-label">Hotel Image URL</label>
                 <InputText id="hotelImage" class="form-control" @bind-Value="hotel.HotelImage" placeholder="Enter the URL of the hotel image" />
+                <ValidationMessage For="@(() => hotel.HotelImage)" />
             </div>
 
             <div class="text-center">
@@ -159,7 +168,6 @@
         }
     </div>
 </div>
-
 
 
 <!-- Include Bootstrap JS and Popper -->
@@ -181,7 +189,7 @@
     {
         try
         {
-          await HotelService.Add(hotel,userInfoService._currentUser.UserId);
+            await HotelService.Add(hotel, userInfoService._currentUser.UserId);
             isSuccess = true;
             errorMessage = null;
             Navigation.NavigateTo("/hotel-owner-home");

@@ -7,7 +7,7 @@ using RoomBookingDll.Models;
 
 #nullable disable
 
-namespace RoomBookingDll.Migrations
+namespace RoomDll.Migrations
 {
     [DbContext(typeof(RoomBookingDbContext))]
     partial class RoomBookingDbContextModelSnapshot : ModelSnapshot

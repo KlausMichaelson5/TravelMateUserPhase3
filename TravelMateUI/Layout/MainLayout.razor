@@ -1,13 +1,7 @@
 ﻿@using TravelMate2.Services
-@using System.Text.Json
-@using TravelMate.Models
-@using TravelMate2.Services
-@using TravelMateUI.Services
 @inherits LayoutComponentBase
 @inject NavigationManager NavigationManager
 @inject UserInfoService userInfoService
-@inject UserInfoService userInfoService
-@inject LocalStorageService localStorageService
 
 <style>
     .header {
@@ -65,6 +59,7 @@
             display: inline-block;
             margin-right: 15px;
             font-size: 1.5rem;
+            color: aliceblue;
         }
 </style>
 
@@ -75,7 +70,7 @@
                 <div class="d-flex justify-content-between align-items-center">
                     <!-- Logo -->
                     <a class="navbar-brand" href="/">
-                        <img src="https://cdn-icons-gif.flaticon.com/15944/15944705.gif" alt="Travel Mate Logo" class="logo-gif">
+                        <img src="./trip.gif" alt="Travel Mate Logo" class="logo-gif">
                         Travel Mate
                     </a>
                     <!-- Navigation Menu -->
@@ -110,13 +105,9 @@
                             <a href="/Registration/1" class="btn btn-primary">Create Account</a>
                         }
                         <div class="dropdown ml-3">
-                            <button class="btn btn-secondary dropdown-toggle" type="button" id="languageCurrencyDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                IN | ENG | INR
+                            <button class="btn btn-info " type="button" id="languageCurrencyDropdown" @onclick="TravelPro">
+                                <img src="./diamond (1).gif" alt="Travel Mate Logo" class="logo-gif"> TravelMatePro
                             </button>
-                            <div class="dropdown-menu" aria-labelledby="languageCurrencyDropdown">
-                                <a class="dropdown-item" href="#">Change Language</a>
-                                <a class="dropdown-item" href="#">Change Currency</a>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -158,31 +149,20 @@
         </div>
         <div class="row mt-3">
             <div class="col-12 text-center">
-                <span>Â© 2024 Travel Mate - All Rights Reserved</span>
+                <span>© 2024 Travel Mate - All Rights Reserved</span>
             </div>
         </div>
     </div>
 </footer>
 
 @code {
-
-    protected override async Task OnInitializedAsync()
+    private void Logout()
     {
-        var userData = await localStorageService.GetItemAsync("currentUser");
-        if (userData != null)
-        {
-            var user = JsonSerializer.Deserialize<User>(userData);
-            if (user != null)
-            {
-                userInfoService.SetCurrentUser(user);
-            }
-        }
-    }
-
-    private async Task Logout()
-    {
-        await localStorageService.RemoveItemAsync("currentUser");
         userInfoService.ClearUser();
         NavigationManager.NavigateTo("/login");
+    }
+    public void TravelPro()
+    {
+        NavigationManager.NavigateTo("/Pro");
     }
 }

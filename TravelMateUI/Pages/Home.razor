@@ -1,4 +1,5 @@
 ﻿@page "/"
+@using System.ComponentModel.DataAnnotations
 @inherits LayoutComponentBase
 @inject NavigationManager NavigationManager
 
@@ -225,31 +226,39 @@
 <div class="search-bar">
     <EditForm Model="@searchModel" OnValidSubmit="SubmitSearch">
         <DataAnnotationsValidator />
-        <ValidationSummary />
 
         <div class="row g-2">
             <div class="col-md-4">
-                <InputText @bind-Value="searchModel.CityName" class="form-control" placeholder="Where are you going?" required />
+                <label for="cityName">Add Location</label>
+                <InputText @bind-Value="searchModel.CityName" id="cityName" class="form-control" placeholder="Where are you going?" required />
+                <ValidationMessage For="@(() => searchModel.CityName)" />
             </div>
             <div class="col-md-3">
-                <InputDate @bind-Value="searchModel.CheckInDate" class="form-control" />
+                <label for="checkInDate">Check-in</label>
+                <InputDate @bind-Value="searchModel.CheckInDate" id="checkInDate" class="form-control" min="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                <ValidationMessage For="@(() => searchModel.CheckInDate)" />
             </div>
             <div class="col-md-3">
-                <InputDate @bind-Value="searchModel.CheckOutDate" class="form-control" />
+                <label for="checkOutDate">Check-out</label>
+                <InputDate @bind-Value="searchModel.CheckOutDate" id="checkOutDate" class="form-control" min="@(searchModel.CheckInDate?.AddDays(1).ToString("yyyy-MM-dd") ?? DateTime.Now.AddDays(1).ToString("yyyy-MM-dd"))" />
+                <ValidationMessage For="@(() => searchModel.CheckOutDate)" />
             </div>
             <div class="col-md-2">
-                <InputText @bind-Value="searchModel.Guests" class="form-control" />
+                <label for="guests">Guests</label>
+                <InputSelect @bind-Value="searchModel.Guests" id="guests" class="form-control">
+                    @for (int i = 1; i <= 4; i++)
+                    {
+                        <option value="@i">@i</option>
+                    }
+                </InputSelect>
+                <ValidationMessage For="@(() => searchModel.Guests)" />
             </div>
-            <div class="col-md-12 text-center">
-                <Button type="submit" class="btn btn-primary w-100">Search</Button>
+            <div class="col-md-12 text-center mt-3">
+                <button type="submit" class="btn btn-primary w-100">Search</button>
             </div>
         </div>
     </EditForm>
 </div>
-
-
-
-
 
 <!-- Featured Services Section -->
 <section id="services" class="featured-services">
@@ -374,17 +383,47 @@
 
     private void SubmitSearch()
     {
-        if (!string.IsNullOrEmpty(searchModel.CityName))
+        if (string.IsNullOrEmpty(searchModel.CityName) ||
+            !searchModel.CheckInDate.HasValue ||
+            !searchModel.CheckOutDate.HasValue)
         {
-            NavigationManager.NavigateTo($"/hotels?city={searchModel.CityName}");
+            ShowErrorPopup("Please enter all required fields.");
+            return;
         }
+
+        if (searchModel.CheckInDate >= searchModel.CheckOutDate)
+        {
+            ShowErrorPopup("Check-out date must be after check-in date.");
+            return;
+        }
+
+        var checkInDate = searchModel.CheckInDate.Value.ToString("yyyy-MM-dd");
+        var checkOutDate = searchModel.CheckOutDate.Value.ToString("yyyy-MM-dd");
+
+        var url = $"/hotels?city={searchModel.CityName}&checkInDate={checkInDate}&checkOutDate={checkOutDate}&guests={searchModel.Guests}";
+        NavigationManager.NavigateTo(url);
+    }
+
+    private void ShowErrorPopup(string message)
+    {
+        // Implement a method to show a popup with the error message
+        // This could be done using JavaScript interop or a Blazor component library
+        Console.WriteLine($"Error: {message}"); // Placeholder for actual implementation
     }
 
     public class SearchModel
     {
+        [Required(ErrorMessage = "Please enter a destination.")]
         public string CityName { get; set; }
+
+        [Required(ErrorMessage = "Please select a check-in date.")]
         public DateTime? CheckInDate { get; set; }
+
+        [Required(ErrorMessage = "Please select a check-out date.")]
         public DateTime? CheckOutDate { get; set; }
-        public string Guests { get; set; }
+
+        [Required(ErrorMessage = "Please select the number of guests.")]
+        [Range(1, 4, ErrorMessage = "Number of guests must be between 1 and 4.")]
+        public int Guests { get; set; } = 1;
     }
 }

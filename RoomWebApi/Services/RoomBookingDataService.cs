@@ -5,10 +5,10 @@ namespace RoomBooking.Services
 {
     public interface IRoomBookingDataService
     {
-        Task AddRoomAsync(Room room);
+        Task AddRoomAsync(Room room, int hotelId);
         Task DeleteRoomByIdAsync(int roomId);
         Task<Room> GetRoomByIdAsync(int roomId);
-        Task<List<Room>> GetAllRoomsAsync();
+        Task<List<Room>> GetAllRoomsAsync(int hotelId);
         Task<List<Room>> GetAvailableRoomsAsync();
         Task UpdateRoomAsync(Room room);
     }
@@ -21,9 +21,9 @@ namespace RoomBooking.Services
             _roomService = roomService;
         }
 
-        public Task AddRoomAsync(Room room)
+        public Task AddRoomAsync(Room room, int hotelId)
         {
-            return Task.Run(() => _roomService.AddNewRoom(room));
+            return Task.Run(() => _roomService.AddNewRoom(room,hotelId));
         }
 
         public Task DeleteRoomByIdAsync(int roomId)
@@ -36,9 +36,9 @@ namespace RoomBooking.Services
             return Task.Run(() => _roomService.GetRoomById(roomId));
         }
 
-        public Task<List<Room>> GetAllRoomsAsync()
+        public Task<List<Room>> GetAllRoomsAsync(int hotelId)
         {
-            return Task.Run(() => _roomService.GetAllRooms());
+            return Task.Run(() => _roomService.GetAllRooms(hotelId));
         }
 
         public Task<List<Room>> GetAvailableRoomsAsync()

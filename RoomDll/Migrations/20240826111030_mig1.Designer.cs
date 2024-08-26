@@ -8,10 +8,10 @@ using RoomBookingDll.Models;
 
 #nullable disable
 
-namespace RoomBookingDll.Migrations
+namespace RoomDll.Migrations
 {
     [DbContext(typeof(RoomBookingDbContext))]
-    [Migration("20240823072534_mig1")]
+    [Migration("20240826111030_mig1")]
     partial class mig1
     {
         /// <inheritdoc />

@@ -3,37 +3,46 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TravelMate.Models
 {
-    public class Hotel
-    {
-        [Key]
-        public int HotelId { get; set; }
+  
+        public class Hotel
+        {
+            [Key]
+            public int HotelId { get; set; }
 
-        [ForeignKey("User")]
-        public int HotelOwnerId { get; set; }
+            [ForeignKey("User")]
+            public int HotelOwnerId { get; set; }
 
-        [Required]
-        public string Name { get; set; } = string.Empty;
+            [Required(ErrorMessage = "Hotel Name is required")]
+            public string Name { get; set; } = string.Empty;
 
-        public string Address { get; set; } = string.Empty;
+            [Required(ErrorMessage = "Address is required")]
+            public string Address { get; set; } = string.Empty;
 
-        public string City { get; set; } = string.Empty;
+            [Required(ErrorMessage = "City is required")]
+            public string City { get; set; } = string.Empty;
 
-        public string State { get; set; } = string.Empty;
+            [Required(ErrorMessage = "State is required")]
+            public string State { get; set; } = string.Empty;
 
-        public Nationality Country { get; set; }
+            [Required(ErrorMessage = "Country is required")]
+            public Nationality Country { get; set; }
 
-        public string ZipCode { get; set; } = string.Empty;
+            [MinLength(6, ErrorMessage = "ZipCode must be at least 6 characters long")]
+            public string ZipCode { get; set; } = string.Empty;
 
-        public string Description { get; set; } = string.Empty;
+            [Required(ErrorMessage = "Description is required")]
+            public string Description { get; set; } = string.Empty;
 
-        public decimal Latitude { get; set; }
+            public decimal Latitude { get; set; }
 
-        public decimal Longitude { get; set; }
+            public decimal Longitude { get; set; }
 
-        public decimal Rating { get; set; }
+            [Range(0, 5, ErrorMessage = "Rating must be between 0 and 5")]
+            public decimal Rating { get; set; }
 
-        public bool AvailabilityStatus { get; set; }
+            public bool AvailabilityStatus { get; set; }
 
-        public string HotelImage { get; set; } = string.Empty;
+            [Required(ErrorMessage = "Hotel Image is required")]
+            public string HotelImage { get; set; } = string.Empty;
+        }
     }
-}

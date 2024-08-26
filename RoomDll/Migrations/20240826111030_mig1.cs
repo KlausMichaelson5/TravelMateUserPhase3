@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace RoomBookingDll.Migrations
+namespace RoomDll.Migrations
 {
     /// <inheritdoc />
     public partial class mig1 : Migration

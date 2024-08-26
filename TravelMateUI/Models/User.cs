@@ -36,35 +36,30 @@ namespace TravelMate.Models
         [Key]
         public int UserId { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Name is required")]
         public string Username { get; set; } = string.Empty;
 
-        [Required]//If you are using google not required.
+        [Required(ErrorMessage = "Password is required")]
+        [MinLength(6, ErrorMessage = "Password must be at least 6 characters long")]
         public string PasswordHash { get; set; } = string.Empty;
-
+        [Required(ErrorMessage = "Username is required")]
         public string Name { get; set; } = string.Empty;
 
         public string Address { get; set; } = string.Empty;
 
+        [Required(ErrorMessage = "Nationality is required")]
         public Nationality Nationality { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Email is required")]
+        [EmailAddress(ErrorMessage = "Invalid email address")]
         public string Email { get; set; } = string.Empty;
 
+        [Required(ErrorMessage = "Phone number is required")]
+        [MinLength(10, ErrorMessage = "Invalid phone number")]
         public string PhoneNumber { get; set; } = string.Empty;
 
         public AuthProvider AuthProvider { get; set; } = AuthProvider.Local;
 
         public UserType UserType { get; set; }
     }
-	//public class HttpClientFactory
-	//{
-	//	public static HttpClient CreateHttp(string baseAddres, string token)
-	//	{
-	//		var httpClient = new HttpClient();
-	//		httpClient.BaseAddress = new Uri(baseAddres);
-	//		httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("bearer", token);
-	//		return httpClient;
-	//	}
-	//}
 }

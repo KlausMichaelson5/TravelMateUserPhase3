@@ -2,10 +2,13 @@
 @using Microsoft.AspNetCore.WebUtilities
 @using TravelMateUI.Services
 @using TravelMate.Models
+@using TravelMateUI.Models
 @inject NavigationManager NavigationManager
 @inject ISearchUIService SearchService
-
-<h2>Hotels in @city</h2>
+@inject IWishListUIService WishListService
+<div class="text-center">
+<h2 class="active">Hotels in @city</h2>
+</div>
 
 @if (hotels == null)
 {
@@ -22,13 +25,17 @@ else
         {
             <div class="col-md-4 mb-4">
                 <div class="card">
-                    <img src="" class="card-img-top" alt="@hotel.Name">
+                    <img src="@hotel.HotelImage" class="card-img-top" alt="@hotel.Name">
                     <div class="card-body">
                         <h5 class="card-title">@hotel.Name</h5>
                         <p class="card-text">@hotel.Description</p>
                         <div class="d-flex align-items-center">
                             <i class="fas fa-map-marker-alt mr-2"></i>
                             <span>@hotel.City, @hotel.Country</span>
+                        </div>
+                        <div class="mt-3">
+                            <a class="btn btn-primary" href="/rooms/@hotel.HotelId?checkInDate=@checkInDate&checkOutDate=@checkOutDate">View Rooms</a>
+                            <button class="btn btn-secondary mt-2" @onclick="() => AddToWishList(hotel)">Add to Wishlist</button>
                         </div>
                     </div>
                 </div>
@@ -40,6 +47,9 @@ else
 @code {
     private List<Hotel> hotels;
     private string city;
+    private DateTime? checkInDate;
+    private DateTime? checkOutDate;
+    private int currentUserId = 1; // Assume you get this from the authentication context
 
     protected override async Task OnInitializedAsync()
     {
@@ -49,16 +59,45 @@ else
         if (query.TryGetValue("city", out var cityName))
         {
             city = cityName;
-            await LoadHotels();
         }
+
+        if (query.TryGetValue("checkInDate", out var checkInDateStr))
+        {
+            if (DateTime.TryParse(checkInDateStr, out var parsedDate))
+            {
+                checkInDate = parsedDate;
+            }
+        }
+
+        if (query.TryGetValue("checkOutDate", out var checkOutDateStr))
+        {
+            if (DateTime.TryParse(checkOutDateStr, out var parsedDate))
+            {
+                checkOutDate = parsedDate;
+            }
+        }
+
+        await LoadHotels();
     }
 
     private async Task LoadHotels()
     {
-        // Fetch all hotels from the API
         var allHotels = await SearchService.GetAllHotels();
-
-        // Filter hotels by the city name
         hotels = allHotels.Where(h => h.City.Equals(city, StringComparison.OrdinalIgnoreCase)).ToList();
+    }
+
+    private async Task AddToWishList(Hotel hotel)
+    {
+        var wishListItem = new WishListTable
+            {
+                HotelId = hotel.HotelId,
+                UserId = currentUserId,
+                HotelImage=hotel.HotelImage,
+                HotelName=hotel.Name
+                // CreatedAt = DateOnly.UtcNow;
+            };
+
+        await WishListService.AddWishListItem(wishListItem, currentUserId);
+        // Optionally, show a success message or update UI
     }
 }

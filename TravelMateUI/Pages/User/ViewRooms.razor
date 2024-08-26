@@ -1,0 +1,188 @@
+﻿@page "/rooms/{hotelId:int}"
+@using System.Text.Json
+@using Microsoft.AspNetCore.WebUtilities
+@using TravelMate.Models
+@using TravelMateUI.Services
+@using TravelMate2.Services
+@inject IRoomUIService RoomService
+@inject IHotelBookingUIService BookingService
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JSRuntime
+
+<div class="container mt-4">
+    <h2 class="text-center mb-4">Rooms in Hotel</h2>
+
+    @if (rooms == null)
+    {
+        <div class="loading-message">
+            <div class="spinner-border text-primary" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+            <p>Loading rooms, please wait...</p>
+        </div>
+    }
+    else if (rooms.Count == 0)
+    {
+        <div class="no-rooms-message text-center">
+            <h3>No Rooms Found</h3>
+            <p>Sorry, it looks like there are no rooms available in this hotel at the moment.</p>
+            <button class="btn btn-primary" @onclick="NavigateToHotels">Explore Other Hotels</button>
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            @foreach (var room in rooms)
+            {
+                <div class="col-md-6 mb-4">
+                    <div class="card hover-card">
+                        <div class="card-body">
+                            <h5 class="card-title">@room.RoomType</h5>
+                            <p class="card-text">Price: @room.Price</p>
+                            <p class="card-text">Amenities: @room.Amenities</p>
+                            <div class="mt-3">
+                                @if (room.AvailabilityStatus.Equals("True", StringComparison.OrdinalIgnoreCase))
+                                {
+                                    <button class="btn btn-danger book-button mt-2" @onclick="() => BookRoom(room)">Book Room</button>
+                                }
+                                else
+                                {
+                                    <span class="text-muted mt-2">Room already booked</span>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public int hotelId { get; set; }
+    private DateOnly? checkInDate;
+    private DateOnly? checkOutDate;
+    private List<Room> rooms;
+    private int currentUserId;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var uri = new Uri(NavigationManager.Uri);
+        var query = QueryHelpers.ParseQuery(uri.Query);
+
+        if (query.TryGetValue("checkInDate", out var checkInDateStr))
+        {
+            if (DateOnly.TryParse(checkInDateStr, out var parsedDate))
+            {
+                checkInDate = parsedDate;
+            }
+        }
+
+        if (query.TryGetValue("checkOutDate", out var checkOutDateStr))
+        {
+            if (DateOnly.TryParse(checkOutDateStr, out var parsedDate))
+            {
+                checkOutDate = parsedDate;
+            }
+        }
+        try
+        {
+            var userJson = await JSRuntime.InvokeAsync<string>("localStorage.getItem", "currentUser");
+            var user = JsonSerializer.Deserialize<User>(userJson); // Deserialize user from local storage
+            currentUserId = user?.UserId ?? 0; // Set userId or handle error
+            rooms = await RoomService.GetAll(hotelId);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error retrieving rooms: {ex.Message}");
+        }
+    }
+
+    private async Task BookRoom(Room room)
+    {
+        try
+        {
+            // Set the room's availability status to "Booked"
+            room.AvailabilityStatus = "False";
+            await RoomService.Update(room, room.RoomId);
+
+            // Create a new booking
+            var booking = new HotelBooking
+                {
+                    HotelId = hotelId,
+                    RoomId = room.RoomId,
+                    UserId = currentUserId,
+                    BookingStatus = "True",
+                    TotalAmount = 5000
+                };
+            await BookingService.AddNewBooking(booking, currentUserId);
+
+            // Refresh the list of rooms
+            rooms = await RoomService.GetAll(hotelId);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error booking room: {ex.Message}");
+        }
+    }
+
+    private void NavigateToHotels()
+    {
+        NavigationManager.NavigateTo("/");
+    }
+}
+
+<style>
+    .loading-message {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        margin-top: 50px;
+    }
+
+    .no-rooms-message {
+        margin-top: 50px;
+    }
+
+    .hover-card {
+        transition: box-shadow 0.3s ease-in-out, background-color 0.3s ease-in-out;
+    }
+
+        .hover-card:hover {
+            background-color: #f8f9fa;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+    .card-body {
+        padding: 1.5rem;
+    }
+
+    .card-title {
+        font-weight: bold;
+        color: #007bff;
+    }
+
+    .card-text {
+        margin-bottom: 0.5rem;
+    }
+
+    .book-button {
+        background-color: #dc3545;
+        border-color: #dc3545;
+        transition: background-color 0.3s ease-in-out;
+    }
+
+        .book-button:disabled {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
+        }
+
+        .book-button:hover:disabled {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
+        }
+</style>

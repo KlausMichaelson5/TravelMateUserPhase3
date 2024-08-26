@@ -18,11 +18,11 @@ namespace RoomBooking.Controllers
             }
 
             [HttpGet("AllRooms")]
-            public async Task<ActionResult<List<Room>>> GetAllRooms()
+            public async Task<ActionResult<List<Room>>> GetAllRooms(int hotelId)
             {
                 try
                 {
-                    var rooms = await _roomDataService.GetAllRoomsAsync();
+                    var rooms = await _roomDataService.GetAllRoomsAsync(hotelId);
                     return Ok(rooms);
                 }
                 catch (Exception ex)
@@ -60,11 +60,11 @@ namespace RoomBooking.Controllers
             }
 
             [HttpPost]
-            public async Task<IActionResult> AddRoom([FromBody] Room room)
+            public async Task<IActionResult> AddRoom([FromBody] Room room,[FromQuery] int hotelId)
             {
                 try
                 {
-                    await _roomDataService.AddRoomAsync(room);
+                    await _roomDataService.AddRoomAsync(room, hotelId);
                     return Ok();
                 }
                 catch (Exception ex)
