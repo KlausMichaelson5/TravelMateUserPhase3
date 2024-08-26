@@ -223,26 +223,30 @@
 </div>
 
 <div class="search-bar">
-    <form>
+    <EditForm Model="@searchModel" OnValidSubmit="SubmitSearch">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
         <div class="row g-2">
             <div class="col-md-4">
-                <input type="text" class="form-control" placeholder="Where are you going?">
+                <InputText @bind-Value="searchModel.CityName" class="form-control" placeholder="Where are you going?" required />
             </div>
             <div class="col-md-3">
-                <input type="date" class="form-control" placeholder="Check-in Date">
+                <InputDate @bind-Value="searchModel.CheckInDate" class="form-control" />
             </div>
             <div class="col-md-3">
-                <input type="date" class="form-control" placeholder="Check-out Date">
+                <InputDate @bind-Value="searchModel.CheckOutDate" class="form-control" />
             </div>
             <div class="col-md-2">
-                <input type="text" class="form-control" placeholder="Guests">
+                <InputText @bind-Value="searchModel.Guests" class="form-control" />
             </div>
             <div class="col-md-12 text-center">
-                <button type="submit" class="btn btn-primary w-100">Search</button>
+                <Button type="submit" class="btn btn-primary w-100">Search</Button>
             </div>
         </div>
-    </form>
+    </EditForm>
 </div>
+
 
 
 
@@ -366,13 +370,21 @@
 
 
 @code {
-    private void Register()
+    private SearchModel searchModel = new SearchModel();
+
+    private void SubmitSearch()
     {
-        NavigationManager.NavigateTo("/Registration");
+        if (!string.IsNullOrEmpty(searchModel.CityName))
+        {
+            NavigationManager.NavigateTo($"/hotels?city={searchModel.CityName}");
+        }
     }
 
-    private void Login()
+    public class SearchModel
     {
-        NavigationManager.NavigateTo("/login");
+        public string CityName { get; set; }
+        public DateTime? CheckInDate { get; set; }
+        public DateTime? CheckOutDate { get; set; }
+        public string Guests { get; set; }
     }
 }

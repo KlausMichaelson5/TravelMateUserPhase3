@@ -52,7 +52,7 @@ namespace TravelMate.Controllers
 		{
 			try
 			{
-				cab.CabId = id; // Ensure the cab ID in the body matches the ID in the route
+				//cab.CabId = id; // Ensure the cab ID in the body matches the ID in the route
 				await _cabDataServices.UpdateCabAsync(cab, currentUserId);
 				return Ok(new { Message = "Cab updated successfully." });
 			}

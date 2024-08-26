@@ -239,7 +239,10 @@
                             <strong>@hotel.Name</strong><br>
                             <span class="text-muted">Location: @hotel.Address</span>
                         </div>
-                        <a href="/hotel-details/@hotel.HotelId" class="btn btn-primary btn-sm">View Details</a>
+                        <div>
+                            <a href="/hotel-details/@hotel.HotelId" class="btn btn-primary btn-sm">View Details</a>
+                            <a href="/hotel-rooms/@hotel.HotelId" class="btn btn-secondary btn-sm ml-2">View Rooms</a>
+                        </div>
                     </li>
                 }
             }

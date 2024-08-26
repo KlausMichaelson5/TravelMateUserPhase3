@@ -35,8 +35,10 @@ namespace UserDll.Services
 			try
 			{
 				var user = _context.Users.FirstOrDefault(u => u.UserId == id);
-				if (user != null)
+				if (user != null){
 					_context.Users.Remove(user);
+					_context.SaveChanges();
+				}
 				else
 					throw new Exception("User not found to delete.");
 			}

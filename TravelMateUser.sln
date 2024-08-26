@@ -17,9 +17,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CabDll", "CabDll\CabDll.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CabWebApi", "CabWebApi\CabWebApi.csproj", "{589C147B-69B4-46BB-A35D-FD1403874EEE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SearchDll", "SearchDll\SearchDll.csproj", "{AEFC6253-4EFA-4C42-A482-0B36C33B0DDF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SearchDll", "SearchDll\SearchDll.csproj", "{AEFC6253-4EFA-4C42-A482-0B36C33B0DDF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SearchWebApi", "SearchWebApi\SearchWebApi.csproj", "{84A43CB3-01B7-4A20-92BA-CF0B98699D0D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SearchWebApi", "SearchWebApi\SearchWebApi.csproj", "{84A43CB3-01B7-4A20-92BA-CF0B98699D0D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HotelBookingDll", "HotelBookingDll\HotelBookingDll.csproj", "{39D3B001-9EC5-4377-8A7B-71AC9E0EBD92}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HotelBooking", "HotelBooking\HotelBooking.csproj", "{67D12758-108E-4F0C-A8A1-99F29292AD72}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RoomDll", "RoomDll\RoomDll.csproj", "{A7E60817-5A5C-4B04-9E43-A25F292CB3AD}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RoomWebApi", "RoomWebApi\RoomWebApi.csproj", "{76581552-8046-4739-AC5A-7694AD46AF64}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,6 +71,22 @@ Global
 		{84A43CB3-01B7-4A20-92BA-CF0B98699D0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{84A43CB3-01B7-4A20-92BA-CF0B98699D0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{84A43CB3-01B7-4A20-92BA-CF0B98699D0D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{39D3B001-9EC5-4377-8A7B-71AC9E0EBD92}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39D3B001-9EC5-4377-8A7B-71AC9E0EBD92}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39D3B001-9EC5-4377-8A7B-71AC9E0EBD92}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39D3B001-9EC5-4377-8A7B-71AC9E0EBD92}.Release|Any CPU.Build.0 = Release|Any CPU
+		{67D12758-108E-4F0C-A8A1-99F29292AD72}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{67D12758-108E-4F0C-A8A1-99F29292AD72}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{67D12758-108E-4F0C-A8A1-99F29292AD72}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{67D12758-108E-4F0C-A8A1-99F29292AD72}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A7E60817-5A5C-4B04-9E43-A25F292CB3AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7E60817-5A5C-4B04-9E43-A25F292CB3AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7E60817-5A5C-4B04-9E43-A25F292CB3AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7E60817-5A5C-4B04-9E43-A25F292CB3AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{76581552-8046-4739-AC5A-7694AD46AF64}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{76581552-8046-4739-AC5A-7694AD46AF64}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{76581552-8046-4739-AC5A-7694AD46AF64}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{76581552-8046-4739-AC5A-7694AD46AF64}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

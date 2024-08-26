@@ -181,7 +181,7 @@
     {
         try
         {
-            await HotelService.Add(hotel, userInfoService._currentUser.UserId);
+          await HotelService.Add(hotel,userInfoService._currentUser.UserId);
             isSuccess = true;
             errorMessage = null;
             Navigation.NavigateTo("/hotel-owner-home");

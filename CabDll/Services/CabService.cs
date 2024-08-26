@@ -76,9 +76,10 @@ namespace CabDll.Services
 
 		public void Update(Cab cab, int currentUserId)
 		{
-			var cabEntity = _context.Cabs.Find(cab.CabId);
+            var cabEntity = _context.Cabs.FirstOrDefault(c => c.DriverId == currentUserId);
 
-			if (cabEntity == null || cabEntity.DriverId != currentUserId)
+
+            if (cabEntity == null || cabEntity.DriverId != currentUserId)
 			{
 				throw new Exception("Cab not found or you do not have access to update.");
 			}
