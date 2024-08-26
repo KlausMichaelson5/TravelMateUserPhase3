@@ -1,4 +1,5 @@
 ﻿@page "/cabowner"
+@using Microsoft.AspNetCore.Authorization
 @using TravelMate.Models
 @using TravelMate2.Services
 @inherits LayoutComponentBase
@@ -7,6 +8,8 @@
 @inject IJSRuntime JSRuntime
 @inject IUserUIService userUIService
 @inject ICabUIService cabUIService
+@inject ICustomAuthenticationStateProvider authStateProvider
+@attribute [Authorize(Roles = "driver_client")]
 
 <!DOCTYPE html>
 <html lang="en">
@@ -39,7 +42,17 @@
             width: 100%;
         }
     </style>
-
+    <script>
+        function toggleAvailabilityStatus(checkbox) {
+            var label = document.getElementById('availabilityLabel');
+            if (checkbox.checked) {
+                label.style.color = 'green';
+                label.innerHTML = 'Availability status: Available';
+            } else {
+                label.style.color = 'red';
+                label.innerHTML = 'Availability status: Not Available';
+            }
+        }</script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDyjeyU3YV0msuacUOVafevmN6KpsgncgE&callback=initMap"></script>
     
         <script src="./map-functions.js" ></script>

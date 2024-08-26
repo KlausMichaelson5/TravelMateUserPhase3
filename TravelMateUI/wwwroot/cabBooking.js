@@ -85,26 +85,34 @@ function showRoute(userLat, userLng, cabLat, cabLng) {
     });
 }
 function showRouteByAddress(fromLocation, toLocation) {
-    const directionsService = new google.maps.DirectionsService();
+    return new Promise((resolve, reject) => {
+        const directionsService = new google.maps.DirectionsService();
+        const directionsRenderer = new google.maps.DirectionsRenderer();
+        const map = new google.maps.Map(document.getElementById("map"), {
+            zoom: 7,
+            center: { lat: 41.85, lng: -87.65 }  // Default to Chicago
+        });
 
-    const directionsRenderer = new google.maps.DirectionsRenderer();
-    const map = new google.maps.Map(document.getElementById("map"), {
-        zoom: 7,
-        center: { lat: 41.85, lng: -87.65 }  // Default to Chicago
-    });
+        directionsRenderer.setMap(map);
 
-    directionsRenderer.setMap(map);
+        const request = {
+            origin: fromLocation,
+            destination: toLocation,
+            travelMode: google.maps.TravelMode.DRIVING
+        };
 
-    const request = {
-        origin: fromLocation,
-        destination: toLocation,
-        travelMode: google.maps.TravelMode.DRIVING
-    };
-
-    directionsService.route(request, function (result, status) {
-        if (status == 'OK') {
-            directionsRenderer.setDirections(result);
-        }
+        directionsService.route(request, function (result, status) {
+            if (status === 'OK') {
+                directionsRenderer.setDirections(result);
+                // Extract the total distance
+                const totalDistance = result.routes[0].legs.reduce((sum, leg) => sum + leg.distance.value, 0);
+                // Convert meters to kilometers
+                const totalDistanceInKm = totalDistance / 1000;
+                resolve({ distance: totalDistanceInKm });
+            } else {
+                reject(new Error('Directions request failed due to ' + status));
+            }
+        });
     });
 }
 function getCurrentLocation() {
