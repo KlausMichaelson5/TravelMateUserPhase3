@@ -1,0 +1,64 @@
+﻿@page "/hotels"
+@using Microsoft.AspNetCore.WebUtilities
+@using TravelMateUI.Services
+@using TravelMate.Models
+@inject NavigationManager NavigationManager
+@inject ISearchUIService SearchService
+
+<h2>Hotels in @city</h2>
+
+@if (hotels == null)
+{
+    <p>Loading...</p>
+}
+else if (hotels.Count == 0)
+{
+    <p>No hotels found in @city.</p>
+}
+else
+{
+    <div class="row">
+        @foreach (var hotel in hotels)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <img src="" class="card-img-top" alt="@hotel.Name">
+                    <div class="card-body">
+                        <h5 class="card-title">@hotel.Name</h5>
+                        <p class="card-text">@hotel.Description</p>
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-map-marker-alt mr-2"></i>
+                            <span>@hotel.City, @hotel.Country</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+@code {
+    private List<Hotel> hotels;
+    private string city;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var uri = new Uri(NavigationManager.Uri);
+        var query = QueryHelpers.ParseQuery(uri.Query);
+
+        if (query.TryGetValue("city", out var cityName))
+        {
+            city = cityName;
+            await LoadHotels();
+        }
+    }
+
+    private async Task LoadHotels()
+    {
+        // Fetch all hotels from the API
+        var allHotels = await SearchService.GetAllHotels();
+
+        // Filter hotels by the city name
+        hotels = allHotels.Where(h => h.City.Equals(city, StringComparison.OrdinalIgnoreCase)).ToList();
+    }
+}
