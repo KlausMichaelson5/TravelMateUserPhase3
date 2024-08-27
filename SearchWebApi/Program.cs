@@ -1,6 +1,7 @@
 using CabBookingDll.Models;
 using CabDll.Models;
 using CabDll.Services;
+using HotelBookingDll.Models;
 using HotelDll.Models;
 using HotelDll.Services;
 using Microsoft.EntityFrameworkCore;
@@ -38,6 +39,10 @@ namespace SearchWebApi
                 options.UseSqlServer(builder.Configuration.GetConnectionString("myConnection"));
             });
             builder.Services.AddDbContext<CabBookingDbContext>(options =>
+            {
+                options.UseSqlServer(builder.Configuration.GetConnectionString("myConnection"));
+            });
+            builder.Services.AddDbContext<HotelBookingDbContext>(options =>
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("myConnection"));
             });

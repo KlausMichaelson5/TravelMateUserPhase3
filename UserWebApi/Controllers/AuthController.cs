@@ -25,7 +25,7 @@ namespace UserWebApi.Controllers
 		}
 
 		[HttpPost("login")]
-		public IActionResult Login([FromBody] UserLogin user)
+		public async Task<IActionResult> Login([FromBody] UserLogin user)
 		{
 			// Validate the user credentials (this is just a dummy check, replace with your logic)
 			var tempUser = _usedDataSerice.GetUser(user);

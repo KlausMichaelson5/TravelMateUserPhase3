@@ -1,4 +1,5 @@
-﻿using System.Net.Http.Json;
+﻿using System.Net.Http;
+using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
 using TravelMate.Models;
@@ -68,11 +69,17 @@ namespace TravelMate2.Services
             httpClient.BaseAddress = new Uri(Program.Configuration["BaseUrl"]!);
             _authService = authService;
         }
-        public async Task Add(User user)
-        {
-             await httpClient.PostAsJsonAsync<User>("users/", user);
-            
-        }
+       
+            public async Task Add(User user)
+            {
+                var response = await httpClient.PostAsJsonAsync("users/", user);
+                if (!response.IsSuccessStatusCode)
+                {
+                    var errorMessage = await response.Content.ReadAsStringAsync();
+                    throw new Exception($"Failed to add user: {errorMessage}");
+                }
+            }
+        
 
 		public async Task<User> GetUser(UserInfo user)
 		{

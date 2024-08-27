@@ -50,6 +50,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		appsettings.json = appsettings.json
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserWebApiTest", "UserWebApiTest\UserWebApiTest.csproj", "{BB8998C0-93A6-4D0D-BC43-60D017FBA1E2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -140,6 +142,10 @@ Global
 		{6053E613-D4C8-4ADA-8FFC-A99508F6D234}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6053E613-D4C8-4ADA-8FFC-A99508F6D234}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6053E613-D4C8-4ADA-8FFC-A99508F6D234}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BB8998C0-93A6-4D0D-BC43-60D017FBA1E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB8998C0-93A6-4D0D-BC43-60D017FBA1E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB8998C0-93A6-4D0D-BC43-60D017FBA1E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB8998C0-93A6-4D0D-BC43-60D017FBA1E2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

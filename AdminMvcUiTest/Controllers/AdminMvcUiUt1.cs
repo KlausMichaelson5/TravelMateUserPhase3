@@ -97,19 +97,17 @@ namespace AdminMvcUiTest.Controllers
         public async Task Delete_ReturnsNotFoundResult_WhenUserIsNotDeleted()
         {
             // Arrange
-            var userId = 1;
-            _mockAdminService.Setup(s => s.DeleteUser(userId)).Throws(new KeyNotFoundException());
+            int nonExistentUserId = 999; // Assuming this ID does not exist in your test data
+            _mockAdminService.Setup(service => service.DeleteUser(nonExistentUserId))
+                             .ThrowsAsync(new KeyNotFoundException("The given key was not present in the dictionary."));
 
             // Act
-            var result = await _controller.Delete(userId);
+            var result = await _controller.Delete(nonExistentUserId) as NotFoundResult;
 
             // Assert
             Assert.IsInstanceOfType(result, typeof(NotFoundResult));
-
-            var notFoundResult = result as NotFoundResult;
-            Assert.IsNotNull(notFoundResult);
-            Assert.AreEqual(404, notFoundResult.StatusCode);
         }
+
 
         [TestMethod]
         public async Task Index_ReturnsNotFoundResult_WhenNoUsersFound()

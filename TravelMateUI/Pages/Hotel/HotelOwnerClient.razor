@@ -1,9 +1,12 @@
 ﻿@page "/hotel-owner-home"
 @using Microsoft.AspNetCore.Authorization
-@using TravelMate2.Services
 @using TravelMate.Models
+@using TravelMate2.Services
+@using TravelMateUI.Services
 @layout MinimalLayout
+@inject ICustomAuthenticationStateProvider authStateProvider
 @inject IHotelBookingUIService HotelBookingUIService
+@inject ISearchUIService SearchUIService
 @inject IHotelUIService HotelService
 @inherits LayoutComponentBase
 @inject UserInfoService userInfoService
@@ -35,13 +38,11 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
-            .header h1 {
-                margin: 0;
-                font-size: 2.5rem;
-                font-weight: bold;
-            }
-
-
+        .header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            font-weight: bold;
+        }
 
         .navbar-nav .nav-link {
             color: #fff;
@@ -49,14 +50,14 @@
             font-weight: 500;
         }
 
-            .navbar-nav .nav-link:hover {
-                color: #b3d9ff;
-            }
+        .navbar-nav .nav-link:hover {
+            color: #b3d9ff;
+        }
 
-            .navbar-nav .nav-link.active {
-                background: #004494;
-                border-radius: 5px;
-            }
+        .navbar-nav .nav-link.active {
+            background: #004494;
+            border-radius: 5px;
+        }
 
         .dropdown-menu {
             background-color: #0056b3;
@@ -67,9 +68,9 @@
             color: #fff;
         }
 
-            .dropdown-item:hover {
-                background-color: #004494;
-            }
+        .dropdown-item:hover {
+            background-color: #004494;
+        }
 
         .dashboard-section {
             background: #ffffff;
@@ -80,12 +81,12 @@
             max-width: 1200px;
         }
 
-            .dashboard-section h2 {
-                color: #007bff;
-                margin-bottom: 20px;
-                font-size: 2rem;
-                font-weight: bold;
-            }
+        .dashboard-section h2 {
+            color: #007bff;
+            margin-bottom: 20px;
+            font-size: 2rem;
+            font-weight: bold;
+        }
 
         .dashboard-card {
             background: #e9ecef;
@@ -95,34 +96,39 @@
             margin-bottom: 20px;
         }
 
-            .dashboard-card h4 {
-                margin-bottom: 20px;
-                font-size: 1.75rem;
-                color: #0056b3;
-            }
+        .dashboard-card h4 {
+            margin-bottom: 20px;
+            font-size: 1.75rem;
+            color: #0056b3;
+        }
 
-            .dashboard-card ul {
-                list-style: none;
-                padding: 0;
-                margin: 0;
-            }
+        .dashboard-card ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
 
-                .dashboard-card ul li {
-                    background: #ffffff;
-                    border: 1px solid #ddd;
-                    border-radius: 8px;
-                    margin-bottom: 15px;
-                    padding: 15px;
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                    transition: background 0.3s, transform 0.3s;
-                }
+        .dashboard-card ul li {
+            background: #ffffff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            transition: background 0.3s, transform 0.3s;
+        }
 
-                    .dashboard-card ul li:hover {
-                        background: #f1f1f1;
-                        transform: scale(1.02);
-                    }
+        .dashboard-card ul li:hover {
+            background: #f1f1f1;
+            transform: scale(1.02);
+        }
+
+        .dashboard-card img {
+            border-radius: 8px;
+            max-width: 150px;
+            margin-right: 15px;
+        }
 
         .filter-button {
             display: inline-block;
@@ -139,9 +145,9 @@
             transition: background 0.3s, color 0.3s;
         }
 
-            .filter-button:hover {
-                background-color: #0056b3;
-            }
+        .filter-button:hover {
+            background-color: #0056b3;
+        }
 
         .cta-button {
             display: inline-block;
@@ -158,9 +164,9 @@
             transition: background 0.3s, color 0.3s;
         }
 
-            .cta-button:hover {
-                background-color: #218838;
-            }
+        .cta-button:hover {
+            background-color: #218838;
+        }
 
         .footer {
             background-color: #007bff;
@@ -169,32 +175,24 @@
             margin-top: 20px;
         }
 
-            .footer a {
-                color: #ffffff;
-                transition: color 0.3s;
-            }
-
-                .footer a:hover {
-                    color: #b3d9ff;
-                }
-
-            .footer h5 {
-                font-weight: bold;
-                margin-bottom: 1rem;
-                color: #b3d9ff;
-            }
-
-        .media (max-width: 768px) {
-            .header, .dashboard-section
-
-        {
-            padding: 10px;
+        .footer a {
+            color: #ffffff;
+            transition: color 0.3s;
         }
 
+        .footer a:hover {
+            color: #b3d9ff;
         }
+
+        .footer h5 {
+            font-weight: bold;
+            margin-bottom: 1rem;
+            color: #b3d9ff;
+        }
+
+        
     </style>
 </head>
-
 
 <div id="manage-hotels" class="dashboard-section container">
     <h2>Manage Your Hotels and Bookings</h2>
@@ -206,6 +204,7 @@
                 foreach (var hotel in hotels)
                 {
                     <li>
+                        <img src="@hotel.HotelImage" alt="@hotel.Name Image" />
                         <div>
                             <strong>@hotel.Name</strong><br>
                             <span class="text-muted">Location: @hotel.Address</span>
@@ -225,59 +224,62 @@
     </div>
 </div>
 
-<div id="manage-bookings" class="row">
-    <div class="col-md-6">
-        <div class="dashboard-card">
-            <h4>Upcoming Bookings</h4>
-            <button class="filter-button">Filter Bookings</button>
-            <ul>
-                @if (upcomingBookings != null && upcomingBookings.Count > 0)
-                {
-                    foreach (var booking in upcomingBookings)
+<div id="manage-bookings" class="dashboard-section container">
+    <h2>Manage Your Bookings</h2>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="dashboard-card">
+                <h4>Upcoming Bookings</h4>
+                <ul>
+                    @if (upcomingBookings != null && upcomingBookings.Count > 0)
                     {
-                        <li>
-                            <div>
-                                <strong>@booking.HotelName </strong><br>
-                                <span class="text-muted">Booking #@booking.BookingId | Check-in: @booking.CheckInDate | Check-out: @booking.CheckOutDate</span>
-                            </div>
-                            <span class="badge badge-success">Confirmed</span>
-                        </li>
+                        foreach (var booking in upcomingBookings)
+                        {
+                            <li>
+                                @* <img src="@booking.HotelImage" alt="@booking.HotelName Image" /> *@
+                                <div>
+                                    <strong>@booking.HotelName</strong><br>
+                                    <span class="text-muted">Booking #@booking.BookingId | Check-in: @booking.CheckInDate | Check-out: @booking.CheckOutDate</span>
+                                </div>
+                                <span class="badge badge-success">Confirmed</span>
+                            </li>
+                        }
                     }
-                }
-                else
-                {
-                    <li>No upcoming bookings found.</li>
-                }
-            </ul>
+                    else
+                    {
+                        <li>No upcoming bookings found.</li>
+                    }
+                </ul>
+            </div>
         </div>
-    </div>
 
-    <div class="col-md-6">
-        <div class="dashboard-card">
-            <h4>Past Bookings</h4>
-            <ul>
-                @if (pastBookings != null && pastBookings.Count > 0)
-                {
-                    foreach (var booking in pastBookings)
+        <div class="col-md-6">
+            <div class="dashboard-card">
+                <h4>Past Bookings</h4>
+                <ul>
+                    @if (pastBookings != null && pastBookings.Count > 0)
                     {
-                        <li>
-                            <div>
-                                <strong>@booking.HotelName </strong><br>
-                                <span class="text-muted">Booking #@booking.BookingId | Check-in: @booking.CheckInDate | Check-out: @booking.CheckOutDate</span>
-                            </div>
-                            <span class="badge badge-primary">Completed</span>
-                        </li>
+                        foreach (var booking in pastBookings)
+                        {
+                            <li>
+                               @*  <img src="@booking.HotelImage" alt="@booking.HotelName Image" /> *@
+                                <div>
+                                    <strong>@booking.HotelName</strong><br>
+                                    <span class="text-muted">Booking #@booking.BookingId | Check-in: @booking.CheckInDate | Check-out: @booking.CheckOutDate</span>
+                                </div>
+                                <span class="badge badge-primary">Completed</span>
+                            </li>
+                        }
                     }
-                }
-                else
-                {
-                    <li>No past bookings found.</li>
-                }
-            </ul>
+                    else
+                    {
+                        <li>No past bookings found.</li>
+                    }
+                </ul>
+            </div>
         </div>
     </div>
 </div>
-
 @code {
     private List<Hotel> hotels = new();
     private List<HotelBooking> upcomingBookings = new();
@@ -287,14 +289,25 @@
     {
         try
         {
+            await authStateProvider.GetAuthenticationStateAsync();
             var userId = userInfoService._currentUser.UserId;
-            hotels = await HotelService.GetAll(userId);
+            hotels = await SearchUIService.GetAllHotels();
 
-            var allBookings = await HotelBookingUIService.GetAllBookings(userId);
-            var today = DateOnly.FromDateTime(DateTime.UtcNow);
+            var allUpcomingBookings = new List<HotelBooking>();
+            var allPastBookings = new List<HotelBooking>();
 
-            upcomingBookings = allBookings.Where(b => b.CheckOutDate >= today).ToList();
-            pastBookings = allBookings.Where(b => b.CheckOutDate < today).ToList();
+            foreach (var hotel in hotels)
+            {
+                var allBookings = await SearchUIService.GetAllHotelBookings(hotel.HotelId);
+
+                var today = DateOnly.FromDateTime(DateTime.UtcNow);
+
+                allUpcomingBookings.AddRange(allBookings.Where(b => b.CheckOutDate >= today));
+                allPastBookings.AddRange(allBookings.Where(b => b.CheckOutDate < today));
+            }
+
+            upcomingBookings = allUpcomingBookings.OrderBy(b => b.CheckInDate).ToList();
+            pastBookings = allPastBookings.OrderByDescending(b => b.CheckOutDate).ToList();
         }
         catch (Exception ex)
         {
@@ -318,3 +331,4 @@
         NavigationManager.NavigateTo("/login");
     }
 }
+

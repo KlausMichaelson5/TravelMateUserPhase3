@@ -1,5 +1,6 @@
 ﻿using CabBookingDll.Models;
 using CabDll.Models;
+using HotelBookingDll.Models;
 using HotelDll.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -15,19 +16,22 @@ namespace SearchDll.Services
         List<Hotel> GetAllHotels();
         List<Cab> GetAllCabs();
         List<Cabbooking> GetAllCabBookings();
-
+        List<HotelBookingTable> GetAllHotelBooking(int hotelId);
     }
+
     public class SearchService : ISearchService
     {
         private readonly HotelDbContext _Hotelcontext;
         private readonly CabDbContext _Cabcontext;
         private readonly CabBookingDbContext _CabBookingcontext;
+        private readonly HotelBookingDbContext _HotelBookingcontext;
 
-        public SearchService(HotelDbContext hotelContext, CabDbContext cabContext, CabBookingDbContext cabDbContext)
+        public SearchService(HotelDbContext hotelContext, CabDbContext cabContext, CabBookingDbContext cabDbContext, HotelBookingDbContext hotelBookingContext)
         {
             _Hotelcontext = hotelContext;
             _Cabcontext = cabContext;
             _CabBookingcontext = cabDbContext;
+            _HotelBookingcontext = hotelBookingContext;
         }
 
         public List<Hotel> GetAllHotels()
@@ -79,6 +83,25 @@ namespace SearchDll.Services
         public List<Cabbooking> GetAllCabBookings()
         {
             return _CabBookingcontext.CabBookings.ToList();
+        }
+
+        public List<HotelBookingTable> GetAllHotelBooking(int hotelId)
+        {
+            return _HotelBookingcontext.HotelBookingTables
+                .Where(booking => booking.HotelId == hotelId)
+                .Select(booking => new HotelBookingTable
+                {
+                    BookingId = booking.BookingId,
+                    UserId = booking.UserId,
+                    HotelId = booking.HotelId,
+                    HotelName = booking.HotelName,
+                    RoomId = booking.RoomId,
+                    CheckInDate = booking.CheckInDate,
+                    CheckOutDate = booking.CheckOutDate,
+                    BookingStatus = booking.BookingStatus,
+                    TotalAmount = booking.TotalAmount
+                })
+                .ToList();
         }
     }
 }

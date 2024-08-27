@@ -35,19 +35,23 @@ namespace TravelMate.Controllers
 			}
 		}
 
-		[HttpPost]
-		public async Task<IActionResult> Post([FromBody] User user)
-		{
-			try
-			{
-				await _service.RegisterUser(user);
-				return Ok();
-			}
-			catch (Exception ex)
-			{
-				return BadRequest(ex.Message);
-			}
-		}
+        [HttpPost]
+        public async Task<IActionResult> Post([FromBody] User user)
+        {
+            try
+            {
+                await _service.RegisterUser(user);
+                return Ok();
+            }
+            catch (Exception ex) when (ex.Message.Contains("Username already exists"))
+            {
+                return Conflict("The username is already taken. Please choose a different one.");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"An error occurred while registering the user: {ex.Message}");
+            }
+        }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(int id, [FromBody] User user)

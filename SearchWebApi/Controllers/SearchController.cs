@@ -34,5 +34,12 @@ namespace SearchWebApi.Controllers
             var cabs = await _searchDataService.GetAllCabBookings();
             return Ok(cabs);
         }
+
+        [HttpGet("hotelBookings")]
+        public async Task<IActionResult> GetAllHotelBooking(int hotelId)
+        {
+            var hotels=await _searchDataService.GetAllHotelBooking(hotelId);
+            return Ok(hotels);
+        }
     }
 }

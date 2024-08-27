@@ -9,6 +9,7 @@
   <ItemGroup>
     <ProjectReference Include="..\CabBookingDll\CabBookingDll.csproj" />
     <ProjectReference Include="..\CabDll\CabDll.csproj" />
+    <ProjectReference Include="..\HotelBookingDll\HotelBookingDll.csproj" />
     <ProjectReference Include="..\HotelDll\HotelDll.csproj" />
   </ItemGroup>
 

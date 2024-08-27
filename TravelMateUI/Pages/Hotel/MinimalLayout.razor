@@ -119,14 +119,11 @@
                         <li class="nav-item">
                             <a class="nav-link active" href="/register-hotel">Add New Hotel</a>
                         </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link active dropdown-toggle" id="profileDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Profile
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="profileDropdown">
-                                <a class="dropdown-item" href="/edit-profile">Edit Profile</a>
-                                <a class="dropdown-item" @onclick="Logout">Logout</a>
-                            </div>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="/edit-profile">Edit Profile</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" @onclick="Logout">Logout</a>
                         </li>
                     </ul>
                 </div>

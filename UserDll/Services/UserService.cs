@@ -31,12 +31,18 @@ namespace UserDll.Services
         }
 
         public void RegisterUser(User user)
-		{
-			_context.Users.Add(user);
-			_context.SaveChanges();
-		}
+        {
+            // Check if the username already exists
+            if (_context.Users.Any(u => u.Username == user.Username))
+            {
+                throw new InvalidOperationException("Username already exists.");
+            }
 
-		public void UpdateUser(User user)
+            _context.Users.Add(user);
+            _context.SaveChanges();
+        }
+
+        public void UpdateUser(User user)
 		{
 			var tempUser = _context.Users.FirstOrDefault(u => u.UserId == user.UserId);
 			if (tempUser != null)

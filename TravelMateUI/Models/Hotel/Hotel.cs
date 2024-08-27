@@ -6,10 +6,8 @@ namespace TravelMate.Models
   
         public class Hotel
         {
-            [Key]
             public int HotelId { get; set; }
 
-            [ForeignKey("User")]
             public int HotelOwnerId { get; set; }
 
             [Required(ErrorMessage = "Hotel Name is required")]

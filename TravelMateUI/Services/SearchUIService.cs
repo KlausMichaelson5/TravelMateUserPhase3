@@ -7,6 +7,8 @@ namespace TravelMateUI.Services
         Task<List<Hotel>> GetAllHotels();
         Task<List<Cab>> GetAllCabs();
         Task<List<CabBookingModel>> GetAllCabBookings();
+        Task<List<HotelBooking>> GetAllHotelBookings(int hotelId);
+        
 
     }
 
@@ -35,5 +37,11 @@ namespace TravelMateUI.Services
             return await _httpClient.GetFromJsonAsync<List<CabBookingModel>>("search/cabBookings");
 
         }
+
+        public async Task<List<HotelBooking>> GetAllHotelBookings(int hotelId)
+        {
+            return await _httpClient.GetFromJsonAsync<List<HotelBooking>>($"search/hotelBookings?hotelId={hotelId}");
+        }
+        
     }
 }
