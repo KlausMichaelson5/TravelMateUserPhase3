@@ -22,7 +22,7 @@ namespace CabBookingDll.Migrations
                     DropLocation = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Distance = table.Column<double>(type: "float", nullable: false),
                     TotalAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    BookingStatus = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    BookingStatus = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {

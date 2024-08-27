@@ -19,12 +19,12 @@ namespace CabBooking.Controllers
 
         // POST: api/cabbooking
         [HttpPost]
-        public async Task<IActionResult> AddCabBooking([FromBody] Cabbooking cabBooking, [FromQuery] int currentUserId)
+        public async Task<ActionResult<int>> AddCabBooking([FromBody] Cabbooking cabBooking, [FromQuery] int currentUserId)
         {
             try
             {
-                await _cabBookingDataServices.AddCabBookingAsync(cabBooking, currentUserId);
-                return Ok(new { Message = "Cab booking added successfully." });
+                int bookingid=await _cabBookingDataServices.AddCabBookingAsync(cabBooking, currentUserId);
+                return Ok(bookingid);
             }
             catch (Exception ex)
             {
@@ -70,6 +70,20 @@ namespace CabBooking.Controllers
             {
                 var bookings = await _cabBookingDataServices.GetAllCabBookingsAsync(currentUserId);
                 return Ok(bookings);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> UpdateCabBooking([FromBody] Cabbooking cabBooking, [FromQuery] BookingStatus status)
+        {
+            try
+            {
+                await _cabBookingDataServices.UpdateCabBookingAsync(cabBooking, status);
+                return Ok(new { Message = "Cab booking updated successfully." });
             }
             catch (Exception ex)
             {

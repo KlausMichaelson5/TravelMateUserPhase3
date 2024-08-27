@@ -212,8 +212,9 @@
     }
 
     private async Task ConfirmBooking()
-    {      
-        cabBooking.BookingStatus = "Pending";
+    {
+        var bookingid = 0;
+        cabBooking.BookingStatus = BookingStatus.Pending;
         cabBooking.TotalAmount = estimatedFare;
         try
         {
@@ -223,8 +224,7 @@
             {
                 var user = JsonSerializer.Deserialize<User>(userJson);
                 cabBooking.UserId = user.UserId;
-                cabBookingUIService.AddCabBooking(cabBooking, user.UserId);
- 
+                bookingid= await cabBookingUIService.AddCabBooking(cabBooking, user.UserId);
             }
         }
         catch (Exception ex)
@@ -232,7 +232,7 @@
             Console.WriteLine($"Error loading driver details from local storage: {ex.Message}");
         }
         CloseBookingModal();
-        NavigationManager.NavigateTo("/CabBookingConfirmation");
+        NavigationManager.NavigateTo($"/CabBookingConfirmation/{bookingid}");
     }
 
     private string GetStarRating(decimal rating)

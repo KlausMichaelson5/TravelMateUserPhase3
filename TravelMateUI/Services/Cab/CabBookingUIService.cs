@@ -11,7 +11,8 @@ namespace TravelMate2.Services
 {
     public interface ICabBookingUIService
     {
-        Task AddCabBooking(CabBookingModel booking, int currentUserId);
+         Task<int> AddCabBooking(CabBookingModel booking, int currentUserId);
+        Task UpdateCabBooking(CabBookingModel booking, BookingStatus statusModel);
         Task DeleteCabBooking(int id, int currentUserId);
         Task<List<CabBookingModel>> GetAllCabBookings(int currentUserId);
         Task<CabBookingModel> GetCabBookingById(int id, int currentUserId);
@@ -34,6 +35,8 @@ namespace TravelMate2.Services
 
         public async Task<CabBookingModel> GetCabBookingById(int id, int currentUserId)
         {
+        //http://localhost:5005/api/CabBooking/31?currentUserId=6
+       // http://localhost:5005/31?currentUserId=6
             var response = await _httpClient.GetAsync($"{id}?currentUserId={currentUserId}");
             if (response.IsSuccessStatusCode)
             {
@@ -45,14 +48,37 @@ namespace TravelMate2.Services
             }
         }
 
-        public async Task AddCabBooking(CabBookingModel booking, int currentUserId)
+        public async Task<int> AddCabBooking(CabBookingModel booking, int currentUserId)
         {
-            await _httpClient.PostAsJsonAsync($"?currentUserId={currentUserId}", booking);
+            try
+            {
+                var response=await _httpClient.PostAsJsonAsync($"?currentUserId={currentUserId}", booking);
+                if (response.IsSuccessStatusCode)
+                {
+                    int bookingid= await response.Content.ReadFromJsonAsync<int>();
+                    return bookingid;
+                }
+                else
+                {
+                    throw new Exception("Cab booking not found");
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Cab booking add failed");
+
+            }
         }
 
         public async Task DeleteCabBooking(int id, int currentUserId)
         {
             await _httpClient.DeleteAsync($"{id}?currentUserId={currentUserId}");
+        }
+
+        public async Task UpdateCabBooking(CabBookingModel booking, BookingStatus statusModel)
+        {
+            await _httpClient.PutAsJsonAsync($"?status={(int)statusModel}", booking);
         }
     }
 }

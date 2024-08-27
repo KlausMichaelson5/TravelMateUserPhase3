@@ -2,6 +2,14 @@
 
 namespace TravelMate.Models
 {
+    public enum BookingStatus
+    {
+        Pending,
+        Accepted,
+        Current,
+        Finished,
+        Canceled
+    }
     public class CabBookingModel
     {
         public int CabBookingId { get; set; } 
@@ -11,6 +19,6 @@ namespace TravelMate.Models
         public string DropLocation { get; set; }
         public double Distance { get; set; } 
         public decimal TotalAmount { get; set; }
-        public string BookingStatus { get; set; }
+        public BookingStatus BookingStatus { get; set; }
     }
 }

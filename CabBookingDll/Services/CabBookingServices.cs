@@ -9,7 +9,8 @@ namespace CabBookingDll.Services
 {
     public interface ICabBookingServices
     {
-        void Add(Cabbooking cabBooking, int currentUserId);
+        int Add(Cabbooking cabBooking, int currentUserId);
+        void Update(Cabbooking cabBooking,BookingStatus status);
         void Delete(int cabBookingId, int currentUserId);
         Cabbooking Get(int cabBookingId, int currentUserId);
         List<Cabbooking> GetAll(int currentUserId);
@@ -38,7 +39,7 @@ namespace CabBookingDll.Services
             return cabBookingEntity;
         }
 
-        public void Add(Cabbooking cabBooking, int currentUserId)
+        public int Add(Cabbooking cabBooking, int currentUserId)
         {
             var cabBookingEntity = new Cabbooking
             {
@@ -53,6 +54,7 @@ namespace CabBookingDll.Services
 
             _context.CabBookings.Add(cabBookingEntity);
             _context.SaveChanges();
+            return cabBookingEntity.CabbookingId;
         }
 
         public void Delete(int cabBookingId, int currentUserId)
@@ -74,6 +76,20 @@ namespace CabBookingDll.Services
                  .Where(b => b.UserId == currentUserId)
                  .ToList();
         }
+        
+        public void Update(Cabbooking cabBooking, BookingStatus status)
+        {
+            var cabBookingEntity = _context.CabBookings.FirstOrDefault(c=>c.CabbookingId==cabBooking.CabbookingId);
 
+            if (cabBookingEntity == null)
+            {
+                throw new Exception("Cab booking not found to update.");
+            }
+            else
+            {
+                cabBookingEntity.BookingStatus = status;
+                _context.SaveChanges();
+            }
+        }
     }
 }

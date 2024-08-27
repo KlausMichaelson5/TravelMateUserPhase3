@@ -9,6 +9,7 @@
 @inject ISearchUIService searchUIService
 @inject IJSRuntime JSRuntime
 @inject IUserUIService userUIService
+@inject ICabBookingUIService cabBookingService
 @inject ICabUIService cabUIService
 @inject ICustomAuthenticationStateProvider authStateProvider
 @attribute [Authorize(Roles = "driver_client")]
@@ -140,10 +141,26 @@
                     <div class="col-lg-4 col-md-6 mb-4">
                         <div class="card h-100">
                             <div class="card-header bg-info text-white">
-                                <h5 class="mb-0">Current Ride</h5>
+                                <h5 class="mb-0">Accepted Rides</h5>
                             </div>
                             <div class="card-body">
-                                <p>No current ride details available.</p>
+                                @if (AcceptedRides.Count > 0)
+                                {
+                                    <ul class="list-group">
+                                        @foreach (var ride in AcceptedRides)
+                                        {
+                                            <li class="list-group-item">
+                                                <p><strong>Pickup:</strong> @ride.PickupLocation</p>
+                                                <p><strong>Drop:</strong> @ride.DropLocation</p>
+                                                <p><strong>Fare:</strong> $@ride.TotalAmount</p>
+                                            </li>
+                                        }
+                                    </ul>
+                                }
+                                else
+                                {
+                                    <p>No accepted ride details available.</p>
+                                }
                             </div>
                         </div>
                     </div>
@@ -152,7 +169,7 @@
                     <div class="col-lg-4 col-md-6 mb-4">
                         <div class="card h-100">
                             <div class="card-header bg-warning text-white">
-                                <h5 class="mb-0">Upcoming Ride</h5>
+                                <h5 class="mb-0">Upcoming Rides</h5>
                             </div>
                             <div class="card-body">
                                 @if (UpCommingRides.Count > 0)
@@ -164,8 +181,8 @@
                                                 <p><strong>Pickup:</strong> @ride.PickupLocation</p>
                                                 <p><strong>Drop:</strong> @ride.DropLocation</p>
                                                 <p><strong>Fare:</strong> $@ride.TotalAmount</p>
-                                                <button class="btn btn-success" @onclick="() => AcceptRide(ride.CabBookingId)">Accept</button>
-                                                <button class="btn btn-danger" @onclick="() => RejectRide(ride.CabBookingId)">Reject</button>
+                                                <button class="btn btn-success" @onclick="() => AcceptRide(ride)">Accept</button>
+                                                <button class="btn btn-danger" @onclick="() => RejectRide(ride)">Reject</button>
                                             </li>
                                         }
                                     </ul>
@@ -186,7 +203,23 @@
                             <h5 class="mb-0">Finished Ride</h5>
                         </div>
                         <div class="card-body">
-                            <p>No finished ride details available.</p>
+                                @if (PastRides.Count > 0)
+                                {
+                                    <ul class="list-group">
+                                        @foreach (var ride in PastRides)
+                                        {
+                                            <li class="list-group-item">
+                                                <p><strong>Pickup:</strong> @ride.PickupLocation</p>
+                                                <p><strong>Drop:</strong> @ride.DropLocation</p>
+                                                <p><strong>Fare:</strong> $@ride.TotalAmount</p>
+                                            </li>
+                                        }
+                                    </ul>
+                                }
+                                else
+                                {
+                                    <p>No past ride details available.</p>
+                                }
                         </div>
                     </div>
                 </div>
@@ -229,7 +262,13 @@
     private decimal userLongitude = 77.59369000M;
     private string userLocation;
 
+    private List<CabBookingModel> AllRides { get; set; } = new List<CabBookingModel>();
+
     private List<CabBookingModel> UpCommingRides { get; set; } = new List<CabBookingModel>();
+    private List<CabBookingModel> PastRides { get; set; } = new List<CabBookingModel>();
+    private List<CabBookingModel> AcceptedRides { get; set; } = new List<CabBookingModel>();
+
+    private CabBookingModel CurrentRide { get; set; } = new CabBookingModel();
 
     protected async override Task OnInitializedAsync()
     {
@@ -239,8 +278,14 @@
         {
             CabOwnerCab = await cabUIService.GetCab(cabOwner.UserId);
             IsAvailable = CabOwnerCab?.AvailabilityStatus ?? false;
-            UpCommingRides = await searchUIService.GetAllCabBookings();
-            UpCommingRides=UpCommingRides.Where(c => c.CabId == CabOwnerCab.CabId && c.BookingStatus=="Pendings").ToList();
+            AllRides = await searchUIService.GetAllCabBookings();
+        }
+        if (CabOwnerCab != null)
+        {
+
+            UpCommingRides = AllRides.Where(c => c.CabId == CabOwnerCab.CabId && c.BookingStatus == BookingStatus.Pending).ToList();
+            PastRides = AllRides.Where(c => c.CabId == CabOwnerCab.CabId && c.BookingStatus == BookingStatus.Finished).ToList();
+            AcceptedRides = AllRides.Where(c => c.CabId == CabOwnerCab.CabId && c.BookingStatus == BookingStatus.Accepted).ToList();
         }
     }
 
@@ -314,15 +359,24 @@
             Console.WriteLine($"Error fetching location: {ex.Message}");
         }
     }
-    private async Task AcceptRide(int bookingId)
+    private async Task AcceptRide(CabBookingModel cabBooking)
     {
-        // await cabBookingUIService.UpdateBookingStatus(bookingId, "Accepted");
-        // UpcomingRides = await cabBookingUIService.GetUpcomingRidesForDriver(CabOwnerCab.DriverId);
+        await cabBookingService.UpdateCabBooking(cabBooking,BookingStatus.Accepted);
+
+        AllRides = await searchUIService.GetAllCabBookings();
+        AcceptedRides = AllRides.Where(c => c.CabId == CabOwnerCab.CabId && c.BookingStatus == BookingStatus.Accepted).ToList();
+        UpCommingRides = AllRides.Where(c => c.CabId == CabOwnerCab.CabId && c.BookingStatus == BookingStatus.Pending).ToList();
+
     }
 
-    private async Task RejectRide(int bookingId)
+    private async Task RejectRide(CabBookingModel cabBooking)
     {
-        // await cabBookingUIService.UpdateBookingStatus(bookingId, "Rejected");
-        // UpcomingRides = await cabBookingUIService.GetUpcomingRidesForDriver(CabOwnerCab.DriverId);
+        await cabBookingService.UpdateCabBooking(cabBooking, BookingStatus.Canceled);
+
+        AllRides = await searchUIService.GetAllCabBookings();
+
+        AcceptedRides = AllRides.Where(c => c.CabId == CabOwnerCab.CabId && c.BookingStatus == BookingStatus.Accepted).ToList();
+        UpCommingRides = AllRides.Where(c => c.CabId == CabOwnerCab.CabId && c.BookingStatus == BookingStatus.Pending).ToList();
     }
+
 }

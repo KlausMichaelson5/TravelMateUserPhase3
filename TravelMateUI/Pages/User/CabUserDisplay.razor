@@ -227,7 +227,6 @@
         cabBooking.PickupLocation = fromLocation;
         cabBooking.DropLocation = toLocation;
         cabBooking.Distance = Distance;
-        // cabBooking.BookingStatus = True;
         cabBooking.CabId = selectedCab.CabId;
         var cabBookingString = JsonSerializer.Serialize(cabBooking);
         NavigationManager.NavigateTo($"/cabdetails/{selectedCab.DriverId}/{cabBookingString}");

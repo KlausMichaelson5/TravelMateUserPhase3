@@ -29,9 +29,8 @@ namespace CabBookingDll.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CabbookingId"));
 
-                    b.Property<string>("BookingStatus")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("BookingStatus")
+                        .HasColumnType("int");
 
                     b.Property<int>("CabId")
                         .HasColumnType("int");

@@ -20,7 +20,7 @@ namespace CabBooking.DataServices
         }
 
         // Asynchronous method to add a new cab booking
-        public Task AddCabBookingAsync(Cabbooking cabBooking, int currentUserId)
+        public Task<int> AddCabBookingAsync(Cabbooking cabBooking, int currentUserId)
         {
             return Task.Run(() => _cabBookingServices.Add(cabBooking, currentUserId));
         }
@@ -36,5 +36,11 @@ namespace CabBooking.DataServices
         {
             return Task.Run(() => _cabBookingServices.GetAll(currentUserId));
         }
+
+        public Task UpdateCabBookingAsync(Cabbooking cabBooking, BookingStatus status)
+        {
+            return Task.Run(() => _cabBookingServices.Update(cabBooking, status));
+        }
+
     }
 }

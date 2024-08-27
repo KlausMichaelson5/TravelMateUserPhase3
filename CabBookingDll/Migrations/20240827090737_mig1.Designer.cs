@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CabBookingDll.Migrations
 {
     [DbContext(typeof(CabBookingDbContext))]
-    [Migration("20240826135636_mig3")]
-    partial class mig3
+    [Migration("20240827090737_mig1")]
+    partial class mig1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -32,9 +32,8 @@ namespace CabBookingDll.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CabbookingId"));
 
-                    b.Property<string>("BookingStatus")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("BookingStatus")
+                        .HasColumnType("int");
 
                     b.Property<int>("CabId")
                         .HasColumnType("int");
