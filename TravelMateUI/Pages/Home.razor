@@ -1,5 +1,6 @@
 ﻿@page "/"
 @using System.ComponentModel.DataAnnotations
+@using System.Text.Json
 @inherits LayoutComponentBase
 @inject NavigationManager NavigationManager
 
@@ -379,10 +380,11 @@
 
 
 @code {
-    private SearchModel searchModel = new SearchModel();
+    private SearchModel searchModel{ get; set; } = new SearchModel();
 
     private void SubmitSearch()
     {
+
         if (string.IsNullOrEmpty(searchModel.CityName) ||
             !searchModel.CheckInDate.HasValue ||
             !searchModel.CheckOutDate.HasValue)
@@ -400,7 +402,9 @@
         var checkInDate = searchModel.CheckInDate.Value.ToString("yyyy-MM-dd");
         var checkOutDate = searchModel.CheckOutDate.Value.ToString("yyyy-MM-dd");
 
-        var url = $"/hotels?city={searchModel.CityName}&checkInDate={checkInDate}&checkOutDate={checkOutDate}&guests={searchModel.Guests}";
+        var hotelBookingString = JsonSerializer.Serialize(searchModel);
+
+        var url = $"/hotels/{hotelBookingString}";
         NavigationManager.NavigateTo(url);
     }
 

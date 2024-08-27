@@ -19,6 +19,8 @@ namespace HotelBookingDll.Models
         public int UserId { get; set; }
         [ForeignKey("Hotel")]
         public int HotelId { get; set; }
+        [ForeignKey("Hotel")]
+        public string HotelName {  get; set; }
         [ForeignKey("Room")]
         public int RoomId {  get; set; }
         public DateOnly CheckInDate { get; set; }

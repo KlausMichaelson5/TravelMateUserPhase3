@@ -1,4 +1,5 @@
 ﻿@page "/mybookings"
+
 @using System.Text.Json
 @using TravelMate.Models
 @using TravelMate2.Services
@@ -32,10 +33,10 @@ else
             {
 <div class="card booking-card">
 <div class="card-header text-center">
-<h5 class="card-title">Hotel ID: @booking.HotelId</h5>
+<h5 class="card-title">Hotel ID: @booking.HotelName</h5>
 </div>
 <div class="card-body">
-<p class="card-text"><strong>Room ID:</strong> @booking.RoomId</p>
+<p class="card-text"><strong>Room Name:</strong> @booking.RoomId</p>
 <p class="card-text"><strong>Total Amount:</strong> @booking.TotalAmount</p>
 <p class="card-text"><strong>Booking Status:</strong> @booking.BookingStatus</p>
 <p class="card-text"><strong>Check-in Date:</strong> @booking.CheckInDate.ToShortDateString()</p>

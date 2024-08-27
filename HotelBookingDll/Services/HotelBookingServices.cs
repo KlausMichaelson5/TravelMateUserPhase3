@@ -32,7 +32,8 @@ namespace HotelBookingDll.Services
                 CheckInDate = booking.CheckInDate,
                 CheckOutDate = booking.CheckOutDate,
                 BookingStatus = booking.BookingStatus,
-                TotalAmount = booking.TotalAmount
+                TotalAmount = booking.TotalAmount,
+                HotelName= booking.HotelName
             };
             _context.HotelBookingTables.Add(newBooking);
             
@@ -65,7 +66,8 @@ namespace HotelBookingDll.Services
                     CheckInDate = b.CheckInDate,
                     CheckOutDate = b.CheckOutDate,
                     BookingStatus = b.BookingStatus,
-                    TotalAmount = b.TotalAmount
+                    TotalAmount = b.TotalAmount,
+                    HotelName= b.HotelName
                 })
                 .ToList();
         }
@@ -88,7 +90,8 @@ namespace HotelBookingDll.Services
                 CheckInDate = booking.CheckInDate,
                 CheckOutDate = booking.CheckOutDate,
                 BookingStatus = booking.BookingStatus,
-                TotalAmount = booking.TotalAmount
+                TotalAmount = booking.TotalAmount,
+                HotelName = booking.HotelName
             };
         }
     }

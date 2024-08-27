@@ -27,7 +27,7 @@ namespace TravelMate2.Services
 
         public async Task<List<HotelBooking>> GetAllBookings(int currentUserId)
         {
-            return await _httpClient.GetFromJsonAsync<List<HotelBooking>>($"all?currentUserId={currentUserId}");
+            return await _httpClient.GetFromJsonAsync<List<HotelBooking>>($"hotel/all?currentUserId={currentUserId}");
         }
 
         public async Task<HotelBooking> GetBookingById(int id, int currentUserId)
@@ -42,7 +42,7 @@ namespace TravelMate2.Services
                 throw new Exception("Booking not found");
             }
         }
-
+        
         public async Task AddNewBooking(HotelBooking booking, int currentUserId)
         {
             await _httpClient.PostAsJsonAsync($"?currentUserId={currentUserId}", booking);

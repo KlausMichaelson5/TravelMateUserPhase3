@@ -1,13 +1,17 @@
-﻿@page "/hotels"
+﻿@page "/hotels/{hotelBookingString}"
 @using Microsoft.AspNetCore.WebUtilities
+@using System.Text.Json
 @using TravelMateUI.Services
 @using TravelMate.Models
 @using TravelMateUI.Models
+@using static TravelMateUI.Pages.Home
 @inject NavigationManager NavigationManager
 @inject ISearchUIService SearchService
 @inject IWishListUIService WishListService
+
+
 <div class="text-center">
-<h2 class="active">Hotels in @city</h2>
+    <h2 class="active">Hotels in @hotelBooking.CityName</h2>
 </div>
 
 @if (hotels == null)
@@ -16,7 +20,7 @@
 }
 else if (hotels.Count == 0)
 {
-    <p>No hotels found in @city.</p>
+    <p>No hotels found in @hotelBooking.CityName.</p>
 }
 else
 {
@@ -34,7 +38,7 @@ else
                             <span>@hotel.City, @hotel.Country</span>
                         </div>
                         <div class="mt-3">
-                            <a class="btn btn-primary" href="/rooms/@hotel.HotelId?checkInDate=@checkInDate&checkOutDate=@checkOutDate">View Rooms</a>
+                            <a class="btn btn-primary" href="/rooms/@hotel.HotelId/@hotel.Name/@hotelBookingString">View Rooms</a>
                             <button class="btn btn-secondary mt-2" @onclick="() => AddToWishList(hotel)">Add to Wishlist</button>
                         </div>
                     </div>
@@ -45,45 +49,23 @@ else
 }
 
 @code {
+    [Parameter]
+    public string hotelBookingString{ get; set; }
     private List<Hotel> hotels;
-    private string city;
-    private DateTime? checkInDate;
-    private DateTime? checkOutDate;
+    private SearchModel hotelBooking { get; set; } = new SearchModel();
     private int currentUserId = 1; // Assume you get this from the authentication context
 
     protected override async Task OnInitializedAsync()
     {
-        var uri = new Uri(NavigationManager.Uri);
-        var query = QueryHelpers.ParseQuery(uri.Query);
-
-        if (query.TryGetValue("city", out var cityName))
-        {
-            city = cityName;
-        }
-
-        if (query.TryGetValue("checkInDate", out var checkInDateStr))
-        {
-            if (DateTime.TryParse(checkInDateStr, out var parsedDate))
-            {
-                checkInDate = parsedDate;
-            }
-        }
-
-        if (query.TryGetValue("checkOutDate", out var checkOutDateStr))
-        {
-            if (DateTime.TryParse(checkOutDateStr, out var parsedDate))
-            {
-                checkOutDate = parsedDate;
-            }
-        }
-
+        
+        hotelBooking = JsonSerializer.Deserialize<SearchModel>(hotelBookingString);
         await LoadHotels();
     }
 
     private async Task LoadHotels()
     {
         var allHotels = await SearchService.GetAllHotels();
-        hotels = allHotels.Where(h => h.City.Equals(city, StringComparison.OrdinalIgnoreCase)).ToList();
+        hotels = allHotels.Where(h => h.City.Equals(hotelBooking.CityName, StringComparison.OrdinalIgnoreCase)).ToList();
     }
 
     private async Task AddToWishList(Hotel hotel)
@@ -94,7 +76,6 @@ else
                 UserId = currentUserId,
                 HotelImage=hotel.HotelImage,
                 HotelName=hotel.Name
-                // CreatedAt = DateOnly.UtcNow;
             };
 
         await WishListService.AddWishListItem(wishListItem, currentUserId);

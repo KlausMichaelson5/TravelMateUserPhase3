@@ -1,9 +1,11 @@
 ﻿@inherits LayoutComponentBase
 @using Microsoft.AspNetCore.Components.Authorization
 @using TravelMate2.Services
+@using TravelMateUI.Services
 @inject UserInfoService userInfoService
 @inject NavigationManager NavigationManager
 @inject IJSRuntime JSRuntime
+@inject LocalStorageService localStorageService
 
 <!DOCTYPE html>
 <html lang="en">
@@ -193,9 +195,10 @@
         await JSRuntime.InvokeVoidAsync("scrollToSection", "manage-bookings");
     }
 
-    private void Logout()
+    private async Task Logout()
     {
+        await localStorageService.RemoveItemAsync("currentUser");
         userInfoService.ClearUser();
-        NavigationManager.NavigateTo("/login");
+        NavigationManager.NavigateTo("/");
     }
 }

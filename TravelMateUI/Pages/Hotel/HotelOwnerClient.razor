@@ -3,6 +3,7 @@
 @using TravelMate2.Services
 @using TravelMate.Models
 @layout MinimalLayout
+@inject IHotelBookingUIService HotelBookingUIService
 @inject IHotelUIService HotelService
 @inherits LayoutComponentBase
 @inject UserInfoService userInfoService
@@ -227,24 +228,26 @@
 <div id="manage-bookings" class="row">
     <div class="col-md-6">
         <div class="dashboard-card">
-            <h4>Bookings</h4>
+            <h4>Upcoming Bookings</h4>
             <button class="filter-button">Filter Bookings</button>
             <ul>
-                <li>
-                    <div>
-                        <strong>Hotel Grand - Room 301</strong><br>
-                        <span class="text-muted">Booking #5678 | Check-in: 2024-08-30 | Check-out: 2024-09-05</span>
-                    </div>
-                    <span class="badge badge-success">Confirmed</span>
-                </li>
-                <li>
-                    <div>
-                        <strong>Beachside Resort - Suite 105</strong><br>
-                        <span class="text-muted">Booking #5679 | Check-in: 2024-09-10 | Check-out: 2024-09-15</span>
-                    </div>
-                    <span class="badge badge-warning">Pending</span>
-                </li>
-                <!-- Add more bookings as needed -->
+                @if (upcomingBookings != null && upcomingBookings.Count > 0)
+                {
+                    foreach (var booking in upcomingBookings)
+                    {
+                        <li>
+                            <div>
+                                <strong>@booking.HotelName </strong><br>
+                                <span class="text-muted">Booking #@booking.BookingId | Check-in: @booking.CheckInDate | Check-out: @booking.CheckOutDate</span>
+                            </div>
+                            <span class="badge badge-success">Confirmed</span>
+                        </li>
+                    }
+                }
+                else
+                {
+                    <li>No upcoming bookings found.</li>
+                }
             </ul>
         </div>
     </div>
@@ -253,21 +256,23 @@
         <div class="dashboard-card">
             <h4>Past Bookings</h4>
             <ul>
-                <li>
-                    <div>
-                        <strong>Hotel Grand - Room 202</strong><br>
-                        <span class="text-muted">Booking #5670 | Check-in: 2024-07-20 | Check-out: 2024-07-25</span>
-                    </div>
-                    <span class="badge badge-primary">Completed</span>
-                </li>
-                <li>
-                    <div>
-                        <strong>Beachside Resort - Room 102</strong><br>
-                        <span class="text-muted">Booking #5671 | Check-in: 2024-07-25 | Check-out: 2024-07-30</span>
-                    </div>
-                    <span class="badge badge-secondary">Cancelled</span>
-                </li>
-                <!-- Add more past bookings as needed -->
+                @if (pastBookings != null && pastBookings.Count > 0)
+                {
+                    foreach (var booking in pastBookings)
+                    {
+                        <li>
+                            <div>
+                                <strong>@booking.HotelName </strong><br>
+                                <span class="text-muted">Booking #@booking.BookingId | Check-in: @booking.CheckInDate | Check-out: @booking.CheckOutDate</span>
+                            </div>
+                            <span class="badge badge-primary">Completed</span>
+                        </li>
+                    }
+                }
+                else
+                {
+                    <li>No past bookings found.</li>
+                }
             </ul>
         </div>
     </div>
@@ -275,6 +280,8 @@
 
 @code {
     private List<Hotel> hotels = new();
+    private List<HotelBooking> upcomingBookings = new();
+    private List<HotelBooking> pastBookings = new();
 
     protected override async Task OnInitializedAsync()
     {
@@ -282,10 +289,16 @@
         {
             var userId = userInfoService._currentUser.UserId;
             hotels = await HotelService.GetAll(userId);
+
+            var allBookings = await HotelBookingUIService.GetAllBookings(userId);
+            var today = DateOnly.FromDateTime(DateTime.UtcNow);
+
+            upcomingBookings = allBookings.Where(b => b.CheckOutDate >= today).ToList();
+            pastBookings = allBookings.Where(b => b.CheckOutDate < today).ToList();
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error retrieving hotels: {ex.Message}");
+            Console.WriteLine($"Error retrieving data: {ex.Message}");
         }
     }
 
@@ -305,4 +318,3 @@
         NavigationManager.NavigateTo("/login");
     }
 }
-
