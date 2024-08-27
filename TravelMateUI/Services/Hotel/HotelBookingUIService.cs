@@ -1,6 +1,7 @@
 ﻿using System.Net.Http.Json;
 using TravelMate.Models;
 using TravelMate2.Services;
+using TravelMateUI;
 
 
 namespace TravelMate2.Services
@@ -20,7 +21,8 @@ namespace TravelMate2.Services
         public HotelBookingUIService(HttpClient httpClient)
         {
             _httpClient = httpClient;
-            _httpClient.BaseAddress = new Uri("http://localhost:5192/api/bookings/hotel/");
+            _httpClient.BaseAddress = new Uri(Program.Configuration["HotelBooking"]!);
+
         }
 
         public async Task<List<HotelBooking>> GetAllBookings(int currentUserId)

@@ -43,11 +43,6 @@ namespace UserWebApi
                 };
             });
 
-
-            //services.AddDbContext<UserDbContext>(options =>
-            //{
-            //    options.UseSqlServer(services.Configuration.GetConnectionString("myConnection"));
-            //});
             services.AddTransient<IUserDataService, UserDataService>();
             services.AddTransient<IAdminDataService, AdminDataService>();
             services.AddTransient<IUserService, UserService>();
@@ -65,25 +60,10 @@ namespace UserWebApi
 			{
 				options.UseSqlServer(builder.Configuration.GetConnectionString("myConnection"));
 			});
+
 			// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 			builder.Services.AddEndpointsApiExplorer();
 			builder.Services.AddSwaggerGen();
-
-			//var key = Encoding.ASCII.GetBytes("your_secret_key_here");
-			//builder.Services.AddAuthentication(options =>
-			//{
-			//	options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-			//	options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-			//}).AddJwtBearer(options =>
-			//{
-			//	options.TokenValidationParameters = new TokenValidationParameters
-			//	{
-			//		ValidateIssuerSigningKey = true,
-			//		IssuerSigningKey = new SymmetricSecurityKey(key),
-			//		ValidateIssuer = false,
-			//		ValidateAudience = false
-			//	};
-			//});
 
 			builder.Services.AddAuthorization();
 

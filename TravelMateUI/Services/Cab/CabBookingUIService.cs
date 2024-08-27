@@ -4,6 +4,8 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 using TravelMate.Models;
+using TravelMateUI;
+
 
 namespace TravelMate2.Services
 {
@@ -22,7 +24,7 @@ namespace TravelMate2.Services
         public CabBookingUIService(HttpClient httpClient)
         {
             _httpClient = httpClient;
-            _httpClient.BaseAddress = new Uri("http://localhost:5005/api/CabBooking"); // Adjust the base URL as needed
+            _httpClient.BaseAddress = new Uri(Program.Configuration["CabBooking"]!);
         }
 
         public async Task<List<CabBookingModel>> GetAllCabBookings(int currentUserId)
