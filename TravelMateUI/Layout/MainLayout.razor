@@ -7,17 +7,24 @@
 @inject LocalStorageService localStorageService
 @inject UserInfoService userInfoService
 
-<style>
-    .header {
-        background: rgba(0, 0, 0, 0.7);
-        padding: 20px;
-        border-bottom: 1px solid #444;
-        z-index: 1000;
-    }
 
+<html>
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="icon" href="https://cdn.example.com/path/to/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+<style>
+     html,body{
+         display:block;
+     }
     .navbar-brand {
-        font-weight: bold;
-        color: dodgerblue;
+        color: orange !important;
+        font-family:cursive;
         font-size: 2rem;
         display: flex;
         align-items: center;
@@ -25,13 +32,13 @@
 
     .logo-gif {
         width: 50px; /* Adjust the width */
-        height: 50px; /* Adjust the height */
-        margin-right: 10px;
+        height: 30px; /* Adjust the height */
+      /*   margin-right: 10px; */
     }
 
     .nav-link {
         color: #fff;
-        margin-right: 20px;
+         /*  margin-right: 20px; */
         font-weight: 500;
         transition: color 0.3s;
     }
@@ -66,57 +73,71 @@
             color: aliceblue;
         }
 </style>
-
+</head>
+    <body>
 <div class="page">
     <main>
-        <div class="top-row px-6">
-            <div class="header bg-dark py-3 shadow-sm">
-                <div class="d-flex justify-content-between align-items-center">
-                    <!-- Logo -->
-                    <a class="navbar-brand" href="/">
-                        <img src="./trip.gif" alt="Travel Mate Logo" class="logo-gif">
-                        Travel Mate
-                    </a>
+            <div class="page">
                     <!-- Navigation Menu -->
-                    <nav class="nav">
-                        <a class="nav-link" href="/">
-                            <i class="fas fa-home"></i> Home
-                        </a>
-                        <a class="nav-link" href="#">
-                            <i class="fas fa-hotel"></i> Hotels
-                        </a>
-                        <a class="nav-link" href="/bookcab">
-                            <i class="fas fa-car"></i> Cabs
-                        </a>
-                        <a class="nav-link" href="/wishlist">
-                            <i class="fas fa-star"></i> Favourite
-                        </a>
-                        <a class="nav-link" href="/mybookings">
-                            <i class="fas fa-book"></i> My Bookings
-                        </a>
-                    </nav>
-
-                    <!-- User Profile / Account Section -->
-                    <div class="d-flex align-items-center">
-                        @if (userInfoService.GetCurrentUser() != null)
-                        {
-                            <span class="text-white mr-3">Welcome, @userInfoService.GetCurrentUser().Username!</span>
-                            <button @onclick="Logout" class="btn btn-outline-primary mr-2">Logout</button>
-                        }
-                        else
-                        {
-                            <a href="/login" class="btn btn-outline-primary mr-2">Login</a>
-                            <a href="/Registration/1" class="btn btn-primary">Create Account</a>
-                        }
-                        <div class="dropdown ml-3">
-                            <button class="btn btn-info " type="button" id="languageCurrencyDropdown" @onclick="TravelPro">
-                                <img src="./diamond (1).gif" alt="Travel Mate Logo" class="logo-gif"> TravelMatePro
-                            </button>
-                        </div>
+   <!-- Navigation Menu -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="/">
+        <img src="./trip.gif" alt="Travel Mate Logo" class="logo-gif">
+        Travel Mate
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav mx-auto py-1" px-5> <!-- Centered -->
+            <li class="nav-item">
+                <a class="nav-link" href="/">
+                    <i class="fas fa-home"></i> Home
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">
+                    <i class="fas fa-hotel"></i> Hotels
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/bookcab">
+                    <i class="fas fa-car"></i> Cabs
+                </a>
+            </li>
+        </ul>
+        <div class="d-flex align-items-center">
+            @if (userInfoService.GetCurrentUser() != null)
+            {
+                <div class="dropdown">
+                    <button class="btn btn-success rounded-circle p-0" type="button" id="profileDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width:30px">
+                        @userInfoService.GetCurrentUser().Name.Substring(0,1).ToUpper()
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="profileDropdown">
+                        <a class="dropdown-item" href="/info">Profile</a>
+                        <a class="dropdown-item" href="/updateinfo">Update</a>
+                        <a class="dropdown-item" href="/mybookings">Favorites</a>
+                        <a class="dropdown-item" href="/mybookings">Bookings</a>
+                        <a class="dropdown-item" href="/myratings">Ratings</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item text-danger" href="#" @onclick="Logout">Logout</a>
                     </div>
                 </div>
+            }
+            else
+            {
+                <a href="/login" class="btn btn-outline-primary mr-2">Login</a>
+                <a href="/Registration/1" class="btn btn-outline-primary mr-2">Register</a>
+            }
+            <div class="dropdown ml-3">
+                <button class="btn btn-info" type="button" id="languageCurrencyDropdown" @onclick="TravelPro">
+                    <img src="./diamond (1).gif" alt="Travel Mate Logo" class="logo-gif"> TravelMatePro
+                </button>
             </div>
         </div>
+    </div>
+</nav>
+</div>
 
         <article>
             @Body
@@ -158,7 +179,8 @@
         </div>
     </div>
 </footer>
-
+</body>
+</html>
 @code {
     protected override async Task OnInitializedAsync()
     {

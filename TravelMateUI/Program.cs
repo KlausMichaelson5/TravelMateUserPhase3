@@ -50,34 +50,7 @@ namespace TravelMateUI
             builder.RootComponents.Add<HeadOutlet>("head::after");
 			Configuration = builder.Configuration;
 
-            builder.Services.AddTransient(sp => new HttpClient {});
-
-            //builder.Services.AddHttpClient("Auth", client =>
-            //{
-            //    client.BaseAddress = new Uri(builder.Configuration["AuthUrl"]);
-            //});
-            //builder.Services.AddHttpClient("Base", client =>
-            //{
-            //    client.BaseAddress = new Uri(builder.Configuration["BaseUrl"]);
-            //});
-            // builder.Services.AddHttpClient("Cab", client =>
-            //{
-            //    client.BaseAddress = new Uri(builder.Configuration["CabUrl"]);
-            //});
-            // builder.Services.AddHttpClient("CabBooking", client =>
-            //{
-            //    client.BaseAddress = new Uri(builder.Configuration["CabBooking"]);
-            //});
-            // builder.Services.AddHttpClient("Auth", client =>
-            //{
-            //    client.BaseAddress = new Uri(builder.Configuration["BaseUrl"]);
-            //});
-            // builder.Services.AddHttpClient("Auth", client =>
-            //{
-            //    client.BaseAddress = new Uri(builder.Configuration["BaseUrl"]);
-            //});
-
-            
+            builder.Services.AddTransient(sp => new HttpClient {});       
 
             ConfigureServices(builder.Services);
 
