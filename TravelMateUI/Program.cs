@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
-using Microsoft.AspNetCore.Authentication.Google;
+
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using TravelMate.Services;
 using TravelMate2.Services;
@@ -30,7 +30,6 @@ namespace TravelMateUI
             });
             services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
             services.AddScoped<ICustomAuthenticationStateProvider, CustomAuthenticationStateProvider>();
-
             services.AddTransient<ICabBookingUIService, CabBookingUIService>();
             services.AddTransient<ISearchUIService, SearchUIService>();
             services.AddTransient<IRoomUIService, RoomUIService>();
@@ -38,17 +37,7 @@ namespace TravelMateUI
             services.AddTransient<IWishListUIService, WishListUIService>();
             services.AddTransient<IPackageProUIService, PackageProUIService>();
 
-            services.AddAuthentication(options =>
-            {
-                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
-            })
-           .AddCookie()
-           .AddGoogle(options =>
-           {
-               options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
-               options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
-           });
+            
         }
         public static IConfigurationRoot Configuration { get; set; }
 		public static async Task Main(string[] args)
