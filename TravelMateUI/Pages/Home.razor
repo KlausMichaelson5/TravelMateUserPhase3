@@ -1,17 +1,31 @@
 ﻿@page "/"
 @using System.ComponentModel.DataAnnotations
 @using System.Text.Json
+@using TravelMateUI.Services
 @inherits LayoutComponentBase
 @inject NavigationManager NavigationManager
+@inject ISearchUIService SearchUIService
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Travel Mate - Your Ultimate Travel Companion</title>
     <style>
-       
+     
+    #recommended-hotels .card {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
 
-        .search-bar {
+    #recommended-hotels .card-img-top {
+        object-fit: cover;
+    }
+
+    #recommended-hotels .card-body {
+        flex: 1;
+    }
+     .search-bar {
             position: relative;
             bottom: 20px;
             left: 50%;
@@ -292,45 +306,29 @@
     <div class="container">
         <h2 class="text-center mb-5">Recommended Hotels</h2>
         <div class="row">
-            <div class="col-md-4 mb-4">
-                <div class="card">
-                    <img src="./image1.jpg" class="card-img-top" alt="Hotel 1">
-                    <div class="card-body">
-                        <h5 class="card-title">Hotel Paradise</h5>
-                        <p class="card-text">A luxurious stay in the heart of the city & spend time</p>
-                        <div class="d-flex align-items-center">
-                            <i class="fas fa-map-marker-alt mr-2"></i>
-                            <span>Bangalore, IND</span>
+            @if (hotels != null && hotels.Any())
+            {
+                @foreach (var hotel in hotels)
+                {
+                    <div class="col-md-4 mb-4">
+                        <div class="card">
+                            <img src="@hotel.HotelImage" class="card-img-top" alt="@hotel.Name">
+                            <div class="card-body">
+                                <h5 class="card-title">@hotel.Name</h5>
+                                <p class="card-text">@hotel.Description</p>
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-map-marker-alt mr-2"></i>
+                                    <span>@hotel.City, @hotel.State</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="card">
-                    <img src="./image4.jpg" class="card-img-top" alt="Hotel 2">
-                    <div class="card-body">
-                        <h5 class="card-title">Seaside Resort</h5>
-                        <p class="card-text">Relax and unwind by the beach.</p>
-                        <div class="d-flex align-items-center">
-                            <i class="fas fa-map-marker-alt mr-2"></i>
-                            <span>Delhi, IND</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="card">
-                    <img src="./image2.jpg" class="card-img-top" alt="Hotel 3">
-                    <div class="card-body">
-                        <h5 class="card-title">Mountain Lodge</h5>
-                        <p class="card-text">Enjoy views from the comfort room.</p>
-                        <div class="d-flex align-items-center">
-                            <i class="fas fa-map-marker-alt mr-2"></i>
-                            <span>Chennai, IND</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                }
+            }
+            else
+            {
+                <p class="text-center">No hotels available.</p>
+            }
         </div>
     </div>
 </section>
@@ -367,7 +365,15 @@
 
 
 @code {
-    private SearchModel searchModel{ get; set; } = new SearchModel();
+     private SearchModel searchModel{ get; set; } = new SearchModel();
+     private List<TravelMate.Models.Hotel> hotels;
+
+     protected override async Task OnInitializedAsync()
+    {
+        // Fetch top-rated hotels
+        var allHotels = await SearchUIService.GetAllHotels();
+        hotels = allHotels.OrderByDescending(h => h.Rating).Take(3).ToList();
+    }
 
     private void SubmitSearch()
     {
