@@ -20,10 +20,11 @@ namespace TravelMate2.Services
 		public HotelUIService(HttpClient httpClient)
 		{
 			_httpClient = httpClient;
-			_httpClient.BaseAddress = new Uri("http://localhost:5043/api/");
-		}
+            _httpClient.BaseAddress = new Uri(Program.Configuration["HotelUI"]!);
 
-		public async Task Add(Hotel hotel, int currentUserId)
+        }
+
+        public async Task Add(Hotel hotel, int currentUserId)
         {
 			await _httpClient.PostAsJsonAsync($"hotels?currentUserId={currentUserId}",hotel);
 		}

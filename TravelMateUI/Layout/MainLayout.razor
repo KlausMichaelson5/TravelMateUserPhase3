@@ -1,6 +1,10 @@
-﻿@using TravelMate2.Services
+﻿@using System.Text.Json
+@using TravelMate.Models
+@using TravelMate2.Services
+@using TravelMateUI.Services
 @inherits LayoutComponentBase
 @inject NavigationManager NavigationManager
+@inject LocalStorageService localStorageService
 @inject UserInfoService userInfoService
 
 <style>
@@ -84,7 +88,7 @@
                         <a class="nav-link" href="/bookcab">
                             <i class="fas fa-car"></i> Cabs
                         </a>
-                        <a class="nav-link" href="/wishlist">
+                        <a class="nav-link" href="/mybookings">
                             <i class="fas fa-star"></i> Favourite
                         </a>
                         <a class="nav-link" href="#">
@@ -156,8 +160,22 @@
 </footer>
 
 @code {
-    private void Logout()
+    protected override async Task OnInitializedAsync()
     {
+        var userData = await localStorageService.GetItemAsync("currentUser");
+        if (userData != null)
+        {
+            var user = JsonSerializer.Deserialize<User>(userData);
+            if (user != null)
+            {
+                userInfoService.SetCurrentUser(user);
+            }
+        }
+    }
+
+    private async Task Logout()
+    {
+        await localStorageService.RemoveItemAsync("currentUser");
         userInfoService.ClearUser();
         NavigationManager.NavigateTo("/login");
     }

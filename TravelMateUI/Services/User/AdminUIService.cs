@@ -1,6 +1,8 @@
 ﻿using System.Net.Http.Json;
 using System.Threading.Tasks;
 using TravelMate.Models;
+using TravelMateUI;
+
 
 namespace TravelMate.Services
 {
@@ -17,7 +19,8 @@ namespace TravelMate.Services
         public AdminUIService(HttpClient client)
         {
             this.httpClient = client;
-   // Replace with your API base address
+            httpClient.BaseAddress = new Uri(Program.Configuration["BaseUrl"]!);
+
         }
 
         public async Task<List<User>> GetAllUsers()

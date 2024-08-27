@@ -232,7 +232,7 @@
             Console.WriteLine($"Error loading driver details from local storage: {ex.Message}");
         }
         CloseBookingModal();
-        NavigationManager.NavigateTo("/");
+        NavigationManager.NavigateTo("/CabBookingConfirmation");
     }
 
     private string GetStarRating(decimal rating)

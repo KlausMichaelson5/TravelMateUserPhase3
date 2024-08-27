@@ -19,7 +19,7 @@ namespace TravelMateUI.Services
         public PackageProUIService(HttpClient httpClient)
         {
             _httpClient = httpClient;
-            _httpClient.BaseAddress = new Uri("http://localhost:5143/api/");
+            _httpClient.BaseAddress = new Uri(Program.Configuration["PackagePro"]!);
         }
 
         public async Task Add(PackagePro package)

@@ -1,6 +1,7 @@
 ﻿using System.Net.Http.Json;
 using System.Threading.Tasks;
 using TravelMate.Models;
+using TravelMateUI;
 
 namespace TravelMate2.Services
 {
@@ -19,7 +20,7 @@ namespace TravelMate2.Services
         public CabUIService(HttpClient client)
         {
             this.httpClient = client;
-            httpClient.BaseAddress = new Uri("http://localhost:5034/api/");
+            httpClient.BaseAddress = new Uri(Program.Configuration["CabUrl"]!);
         }
 
         public async Task<Cab> GetCab(int userId)

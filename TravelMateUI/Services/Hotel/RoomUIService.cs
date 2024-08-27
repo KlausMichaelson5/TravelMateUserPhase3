@@ -19,7 +19,7 @@ namespace TravelMateUI.Services
         public RoomUIService(HttpClient httpClient)
         {
             _httpClient = httpClient;
-            _httpClient.BaseAddress = new Uri("http://localhost:5191/api/");
+            _httpClient.BaseAddress = new Uri(Program.Configuration["RoomUI"]!);
         }
 
         public async Task Add(Room room, int hotelId)

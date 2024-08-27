@@ -1,0 +1,18 @@
+﻿@page "/CabBookingConfirmation"
+@inject NavigationManager NavigationManager
+
+<div class="container mt-5 text-center">
+    <h1 class="display-4 text-success">Hooray! 🎉</h1>
+    <p class="lead">Your cab is on the way. Your booking is confirmed!</p>
+
+    <button class="btn btn-primary btn-lg" @onclick="GoBackToHomePage">
+        <i class="fas fa-arrow-left"></i> Go Back to Home
+    </button>
+</div>
+
+@code {
+    private void GoBackToHomePage()
+    {
+        NavigationManager.NavigateTo("/");
+    }
+}

@@ -17,7 +17,7 @@ namespace TravelMateUI.Services
         public WishListUIService(HttpClient httpClient)
         {
             _httpClient = httpClient;
-            _httpClient.BaseAddress = new Uri("http://localhost:5016/api/");
+            _httpClient.BaseAddress = new Uri(Program.Configuration["WishlistUI"]!);
         }
 
         public async Task<List<WishListTable>> GetAllWishListItems(int userId)

@@ -26,7 +26,7 @@ namespace UserDll.Services
         public User GetUser(string username, string password)
         {
             var tempUser = _context.Users.FirstOrDefault(u => u.Username == username && u.PasswordHash==password);
-			return tempUser;//add null check
+			return tempUser!;//add null check
 
         }
 
