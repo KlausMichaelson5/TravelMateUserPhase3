@@ -2,10 +2,28 @@
 @using System.Text.Json
 @using TravelMate.Models
 @using TravelMate2.Services
+@using TravelMateUI.Services
 @inject ICabBookingUIService cabBookingUIService
+@inject IUserUIService userService
 @inject IJSRuntime JSRuntime
 
-
+<html>
+<head>
+<script>
+        function localStorageHelper ={
+        setItem: function (key, value) {
+            localStorage.setItem(key, value);
+        },
+        getItem: function (key) {
+            return localStorage.getItem(key);
+        },
+        removeItem: function (key) {
+            localStorage.removeItem(key);
+        }
+    };
+</script>
+</head>
+<body>
 <div class="container mt-5">
     @if (booking != null)
     {
@@ -30,7 +48,8 @@
         </div>
     }
 </div>
-
+</body>
+</html>
 @code {
     [Parameter]
     public int BookingId { get; set; }
@@ -41,8 +60,9 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var userJson = await JSRuntime.InvokeAsync<string>("localStorage.getItem", "currentUser");
+        var userJson = await JSRuntime.InvokeAsync<string>("localStorageHelper.getItem", "currentUser");
         var user = JsonSerializer.Deserialize<User>(userJson); // Deserialize user from local storage
+        Console.WriteLine(user.Username);
         userId = user?.UserId ?? 0; 
         await LoadBookingDetailsAsync();
     }

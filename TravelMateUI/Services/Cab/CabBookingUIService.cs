@@ -37,15 +37,16 @@ namespace TravelMate2.Services
         {
         //http://localhost:5005/api/CabBooking/31?currentUserId=6
        // http://localhost:5005/31?currentUserId=6
-            var response = await _httpClient.GetAsync($"{id}?currentUserId={currentUserId}");
-            if (response.IsSuccessStatusCode)
-            {
-                return await response.Content.ReadFromJsonAsync<CabBookingModel>();
-            }
-            else
-            {
-                throw new Exception("Cab booking not found");
-            }
+            var response = await _httpClient.GetFromJsonAsync<CabBookingModel>($"CabBooking/{id}?currentUserId={currentUserId}");
+            return response;
+            //if (response.IsSuccessStatusCode)
+            //{
+            //    return response;
+            //}
+            //else
+            //{
+            //    throw new Exception("Cab booking not found");
+            //}
         }
 
         public async Task<int> AddCabBooking(CabBookingModel booking, int currentUserId)

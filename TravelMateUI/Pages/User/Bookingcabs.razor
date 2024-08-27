@@ -56,12 +56,22 @@
                                 <p><strong>Languages:</strong> @driverLanguages</p>
                             </div>
                         </div>
-                       
+                        @if (cab.AvailabilityStatus)
+                        {
                         <div class="mt-4">
                             <button class="btn btn-primary btn-lg" @onclick="ShowBookingModal" >
                                 <i class="fas fa-taxi"></i> @(cab.AvailabilityStatus ? "Book Now" : "Not Available")
                             </button>
                         </div>
+                       }
+                       else{
+                        <div class="mt-4">
+                            <button class="btn btn-primary btn-lg" @onclick="ShowBookingModal" disabled>
+                                <i class="fas fa-taxi"></i> @(cab.AvailabilityStatus ? "Book Now" : "Not Available")
+                            </button>
+                        </div>
+                       }
+                        
                     </div>
                 </div>
             </div>
@@ -161,7 +171,7 @@
         await LoadDriverDetails();
         estimatedDistance = cabBooking.Distance;
     }
-
+  
     private async Task LoadCabDetailsAsync()
     {
         try
