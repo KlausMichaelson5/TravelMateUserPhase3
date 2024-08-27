@@ -12,6 +12,7 @@ namespace AdminMvcUi
             builder.Services.AddControllersWithViews();
             
             builder.Services.AddHttpClient<IAdminService,AdminService>();
+            builder.Services.AddHttpClient<IPackageProUIService,PackageProUIService>();
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

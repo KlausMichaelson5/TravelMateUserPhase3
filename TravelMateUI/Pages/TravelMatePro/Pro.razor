@@ -171,9 +171,7 @@
                 }
             }
         </div>
-        <div class="text-center mt-5">
-            <button class="btn add-package-btn" @onclick="NavigateToAddPackage">Add New Package</button>
-        </div>
+       
     }
 </div>
 
@@ -191,11 +189,7 @@
         showDetails = showDetails == packageId ? null : packageId;
     }
 
-    private void NavigateToAddPackage()
-    {
-        Navigation.NavigateTo("/AddPackagePro");
-    }
-
+  
     private void BookPackage(int packageId)
     {
         // Implement booking logic here

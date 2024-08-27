@@ -11,7 +11,7 @@ namespace TravelMate2.Services
 {
     public interface ICabBookingUIService
     {
-         Task<int> AddCabBooking(CabBookingModel booking, int currentUserId);
+        Task<int> AddCabBooking(CabBookingModel booking, int currentUserId);
         Task UpdateCabBooking(CabBookingModel booking, BookingStatus statusModel);
         Task DeleteCabBooking(int id, int currentUserId);
         Task<List<CabBookingModel>> GetAllCabBookings(int currentUserId);

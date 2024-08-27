@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using TravelMate.Services;
 using TravelMate2.Services;
 using TravelMateUI.Services;
+using TravelMateUI.Services.Ratings;
 
 
 namespace TravelMateUI
@@ -36,6 +37,8 @@ namespace TravelMateUI
             services.AddTransient<IHotelBookingUIService, HotelBookingUIService>();
             services.AddTransient<IWishListUIService, WishListUIService>();
             services.AddTransient<IPackageProUIService, PackageProUIService>();
+            services.AddTransient<IHotelRatingUIService, HotelRatingUIService>();
+            services.AddTransient<ICabRatingUIService, CabRatingUIService>();
 
             
         }
