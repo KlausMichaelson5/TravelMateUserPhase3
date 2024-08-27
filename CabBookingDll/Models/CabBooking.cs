@@ -9,6 +9,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CabBookingDll.Models
 {
+    public enum BookingStatus
+    {
+        Pending,
+        Accepted,
+        Current,
+        Finished,
+        Canceled
+    }
   
     [Table("Cabbookings")] // Specifies the table name in the database
     public class Cabbooking
@@ -29,7 +37,7 @@ namespace CabBookingDll.Models
 
         public decimal TotalAmount { get; set; } 
 
-        public string BookingStatus { get; set; }        
+        public BookingStatus BookingStatus { get; set; }        
       
     }
     public class CabBookingDbContext : DbContext

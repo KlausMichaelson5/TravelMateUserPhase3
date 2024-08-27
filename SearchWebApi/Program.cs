@@ -1,3 +1,4 @@
+using CabBookingDll.Models;
 using CabDll.Models;
 using CabDll.Services;
 using HotelDll.Models;
@@ -33,6 +34,10 @@ namespace SearchWebApi
                 options.UseSqlServer(builder.Configuration.GetConnectionString("myConnection"));
             });
             builder.Services.AddDbContext<CabDbContext>(options =>
+            {
+                options.UseSqlServer(builder.Configuration.GetConnectionString("myConnection"));
+            });
+            builder.Services.AddDbContext<CabBookingDbContext>(options =>
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("myConnection"));
             });

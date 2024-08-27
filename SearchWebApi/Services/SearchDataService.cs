@@ -1,4 +1,5 @@
-﻿using CabDll.Models;
+﻿using CabBookingDll.Models;
+using CabDll.Models;
 using CabDll.Services;
 using HotelDll.Models;
 using HotelDll.Services;
@@ -10,6 +11,7 @@ namespace SearchWebApi.Services
     {
         Task<List<Hotel>> GetAllHotels();
         Task<List<Cab>> GetAllCabs();
+        Task<List<Cabbooking>> GetAllCabBookings();
     }
     public class SearchDataService : ISearchDataService
     {
@@ -30,6 +32,12 @@ namespace SearchWebApi.Services
         {
             // Converting synchronous method to asynchronous using Task.Run
             return await Task.Run(() => _searchService.GetAllCabs());
+        }
+
+        public async Task<List<Cabbooking>> GetAllCabBookings()
+        {
+            return await Task.Run(() => _searchService.GetAllCabBookings());
+
         }
     }
 }

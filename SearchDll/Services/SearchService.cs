@@ -1,5 +1,7 @@
-﻿using CabDll.Models;
+﻿using CabBookingDll.Models;
+using CabDll.Models;
 using HotelDll.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,16 +14,20 @@ namespace SearchDll.Services
     {
         List<Hotel> GetAllHotels();
         List<Cab> GetAllCabs();
+        List<Cabbooking> GetAllCabBookings();
+
     }
     public class SearchService : ISearchService
     {
         private readonly HotelDbContext _Hotelcontext;
         private readonly CabDbContext _Cabcontext;
+        private readonly CabBookingDbContext _CabBookingcontext;
 
-        public SearchService(HotelDbContext hotelContext, CabDbContext cabContext)
+        public SearchService(HotelDbContext hotelContext, CabDbContext cabContext, CabBookingDbContext cabDbContext)
         {
             _Hotelcontext = hotelContext;
             _Cabcontext = cabContext;
+            _CabBookingcontext = cabDbContext;
         }
 
         public List<Hotel> GetAllHotels()
@@ -68,6 +74,11 @@ namespace SearchDll.Services
                     Rating = cabEntity.Rating
                 })
                 .ToList();
+        }
+
+        public List<Cabbooking> GetAllCabBookings()
+        {
+            return _CabBookingcontext.CabBookings.ToList();
         }
     }
 }

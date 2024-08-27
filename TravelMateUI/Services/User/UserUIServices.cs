@@ -65,6 +65,7 @@ namespace TravelMate2.Services
 		public UserUIService(HttpClient client, AuthService authService)
         {
             this.httpClient = client;
+            httpClient.BaseAddress = new Uri(Program.Configuration["BaseUrl"]!);
             _authService = authService;
         }
         public async Task Add(User user)
