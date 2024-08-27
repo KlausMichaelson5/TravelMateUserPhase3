@@ -272,6 +272,7 @@
 
     protected async override Task OnInitializedAsync()
     {
+        
         await authStateProvider.GetAuthenticationStateAsync();
         var cabOwner = userInfoService._currentUser;
         if (cabOwner != null)

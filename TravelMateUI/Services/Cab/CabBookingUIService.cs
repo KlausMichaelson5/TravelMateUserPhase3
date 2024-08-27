@@ -37,7 +37,7 @@ namespace TravelMate2.Services
         {
         //http://localhost:5005/api/CabBooking/31?currentUserId=6
        // http://localhost:5005/31?currentUserId=6
-            var response = await _httpClient.GetFromJsonAsync<CabBookingModel>($"CabBooking/{id}?currentUserId={currentUserId}");
+            var response = await _httpClient.GetFromJsonAsync<CabBookingModel>($"{id}?currentUserId={currentUserId}");
             return response;
             //if (response.IsSuccessStatusCode)
             //{
