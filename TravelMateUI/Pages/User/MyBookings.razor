@@ -245,7 +245,6 @@ else
                             {
                                 <p class="card-text text-success"><strong>Booking Completed</strong></p>
                                 <p class="card-text text-muted">Thank you for using our cab service.</p>
-                                <button class="btn btn-info" @onclick="() => AddCabRating(booking.CabId)">Add Rating</button>
                             }
                             else if (booking.BookingStatus == BookingStatus.Pending)
                             {
@@ -325,12 +324,5 @@ else
     {
         Navigate.NavigateTo($"/hotelrating/{hotelId}");
     }
-    private void AddCabRating(int cabId)
-    {
-        Navigate.NavigateTo($"/cabrating/{cabId}");
-    }
 }
 
-
-
-         

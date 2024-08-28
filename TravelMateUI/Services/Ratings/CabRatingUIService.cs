@@ -1,4 +1,5 @@
 ﻿using System.Net.Http.Json;
+using TravelMate2.Services;
 using TravelMateUI.Models.Ratings;
 
 namespace TravelMateUI.Services.Ratings
@@ -9,10 +10,8 @@ namespace TravelMateUI.Services.Ratings
         Task DeleteCabRating(int id, int currentUserId);
         Task<List<CabRating>> GetAllCabRatings(int currentUserId);
         Task<CabRating> GetCabRatingById(int id, int currentUserId);
-        Task<List<CabRating>> GetCabRatingsByUser(int userId);
         Task UpdateCabRating(CabRating rating, int currentUserId);
     }
-
     public class CabRatingUIService : ICabRatingUIService
     {
         private readonly HttpClient _httpClient;
@@ -22,15 +21,14 @@ namespace TravelMateUI.Services.Ratings
             _httpClient = httpClient;
             _httpClient.BaseAddress = new Uri(Program.Configuration["CabRating"]!);
         }
-      
         public async Task<List<CabRating>> GetAllCabRatings(int currentUserId)
         {
-            return await _httpClient.GetFromJsonAsync<List<CabRating>>($"?currentUserId={currentUserId}/");
+            return await _httpClient.GetFromJsonAsync<List<CabRating>>($"?currentUserId={currentUserId}");
         }
 
         public async Task<CabRating> GetCabRatingById(int id, int currentUserId)
         {
-            var response = await _httpClient.GetAsync($"{id}/{currentUserId}");
+            var response = await _httpClient.GetAsync($"{id}?currentUserId={currentUserId}");
             if (response.IsSuccessStatusCode)
             {
                 return await response.Content.ReadFromJsonAsync<CabRating>();
@@ -40,7 +38,6 @@ namespace TravelMateUI.Services.Ratings
                 throw new Exception("Cab rating not found");
             }
         }
-
         public async Task AddCabRating(CabRating rating, int currentUserId)
         {
             await _httpClient.PostAsJsonAsync($"?currentUserId={currentUserId}", rating);
@@ -54,11 +51,6 @@ namespace TravelMateUI.Services.Ratings
         public async Task UpdateCabRating(CabRating rating, int currentUserId)
         {
             await _httpClient.PutAsJsonAsync($"?currentUserId={currentUserId}", rating);
-        }
-
-        public async Task<List<CabRating>> GetCabRatingsByUser(int userId)
-        {
-            return await _httpClient.GetFromJsonAsync<List<CabRating>>($"user/{userId}/ratings");
         }
     }
 }

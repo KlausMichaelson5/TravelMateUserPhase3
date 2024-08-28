@@ -12,8 +12,6 @@ namespace CabRatingDll.Services
         void AddReviewForCab(int cabId, int currentUserId, string review, int rating);
         void DeleteCabRating(int cabRatingId, int currentUserId);
         void DeleteReviewForCab(int cabRatingId, int currentUserId);
-        Task<CabRating> GetCabRatingByCabIdAndUserIdAsync(int cabId, int userId);
-        Task<IEnumerable<CabRating>> GetRatingsByUserAsync(int userId);
         Task<IEnumerable<CabRating>> GetRatingsForCabAsync(int cabId);
         Task<IEnumerable<string>> GetReviewsForCabAsync(int cabId);
         Task<decimal> GetTotalRatingsForCabAsync(int cabId);
@@ -143,24 +141,6 @@ namespace CabRatingDll.Services
 
             existingRating.Review = string.Empty;
             _context.SaveChanges();
-        }
-        public async Task<IEnumerable<CabRating>> GetRatingsByUserAsync(int userId)
-        {
-            return await _context.CabRatings
-                .Where(r => r.UserId == userId)
-                .ToListAsync();
-        }
-        public async Task<CabRating> GetCabRatingByCabIdAndUserIdAsync(int cabId, int userId)
-        {
-            var cabRating = await _context.CabRatings
-                .FirstOrDefaultAsync(r => r.CabId == cabId && r.UserId == userId);
-
-            if (cabRating == null)
-            {
-                throw new Exception("Cab rating not found.");
-            }
-
-            return cabRating;
         }
     }
 }
