@@ -315,16 +315,6 @@
         }
     }
 
-    private async Task ScrollToManageHotels()
-    {
-        await JSRuntime.InvokeVoidAsync("scrollToSection", "manage-hotels");
-    }
-
-    private async Task ScrollToManageBookings()
-    {
-        await JSRuntime.InvokeVoidAsync("scrollToSection", "manage-bookings");
-    }
-
     private void Logout()
     {
         userInfoService.ClearUser();

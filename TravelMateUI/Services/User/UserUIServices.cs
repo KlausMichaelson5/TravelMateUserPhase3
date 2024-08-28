@@ -72,6 +72,7 @@ namespace TravelMate2.Services
        
             public async Task Add(User user)
             {
+                //user.PasswordHash=BCrypt.Net.BCrypt.HashPassword(user.PasswordHash);
                 var response = await httpClient.PostAsJsonAsync("users/", user);
                 if (!response.IsSuccessStatusCode)
                 {
@@ -95,8 +96,16 @@ namespace TravelMate2.Services
             var response = await httpClient.PostAsJsonAsync($"users/login",user);
 			if (response.IsSuccessStatusCode)
 			{
-				var authenticatedUser = await response.Content.ReadFromJsonAsync<User>();
-				return authenticatedUser;
+                var authenticatedUser = await response.Content.ReadFromJsonAsync<User>();
+                if (authenticatedUser !=null /*&& BCrypt.Net.BCrypt.Verify(user.Password,authenticatedUser.PasswordHash*/)
+                {
+				    return authenticatedUser;
+                }
+                else
+                {
+                    throw new Exception("Invalid Credentials");
+                }
+				
 			}
 			else
 			{

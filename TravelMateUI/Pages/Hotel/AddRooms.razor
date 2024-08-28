@@ -3,6 +3,7 @@
 @using TravelMate2.Services
 @using TravelMate.Models
 @using TravelMateUI.Services
+@layout MinimalLayout
 @inject IRoomUIService RoomService
 @inject NavigationManager Navigation
 @attribute [Authorize(Roles = "hotel_owner")]
@@ -11,7 +12,6 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" rel="stylesheet" />
     <style>
         body {
-            padding-top: 70px;
             background-color: #f8f9fa;
         }
 
@@ -34,7 +34,11 @@
 
         <div class="mb-3">
             <label for="roomType" class="form-label">Room Type</label>
-            <InputText id="roomType" class="form-control" @bind-Value="room.RoomType" placeholder="Enter the room type" />
+            <InputSelect id="roomType" class="form-control" @bind-Value="room.RoomType">
+                <option value="">Select Room Type</option>
+                <option value="AC">AC</option>
+                <option value="Non AC">Non AC</option>
+            </InputSelect>
         </div>
 
         <div class="mb-3">
@@ -44,7 +48,11 @@
 
         <div class="mb-3">
             <label for="availabilityStatus" class="form-label">Availability Status</label>
-            <InputText id="availabilityStatus" class="form-control" @bind-Value="room.AvailabilityStatus" placeholder="Enter availability status" />
+            <InputSelect id="availabilityStatus" class="form-control" @bind-Value="room.AvailabilityStatus">
+                <option value="">Select Availability Status</option>
+                <option value="True">True</option>
+                <option value="False">False</option>
+            </InputSelect>
         </div>
 
         <div class="mb-3">
@@ -52,7 +60,7 @@
             <InputText id="amenities" class="form-control" @bind-Value="room.Amenities" placeholder="Enter amenities" />
         </div>
 
-        <button type="submit" class="btn btn-primary">Add Room</button>
+        <button type="submit"  class="btn btn-primary">Add Room</button>
     </EditForm>
 </div>
 
@@ -66,7 +74,7 @@
         try
         {
             await RoomService.Add(room, hotelId);
-            Navigation.NavigateTo($"/hotel-details/{hotelId}");
+            Navigation.NavigateTo($"/hotel-rooms/{hotelId}");
         }
         catch (Exception ex)
         {
