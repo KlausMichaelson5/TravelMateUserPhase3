@@ -9,6 +9,8 @@ namespace CabRatingWebApi.DataServices
         Task AddReviewForCabAsync(int cabId, int currentUserId, string review, int rating);
         Task DeleteCabRatingAsync(int cabRatingId, int currentUserId);
         Task DeleteReviewForCabAsync(int cabRatingId, int currentUserId);
+        Task<CabRating> GetCabRatingByCabIdAndUserIdAsync(int cabId, int userId);
+        Task<IEnumerable<CabRating>> GetRatingsByUserAsync(int userId);
         Task<IEnumerable<CabRating>> GetRatingsForCabAsync(int cabId);
         Task<IEnumerable<string>> GetReviewsForCabAsync(int cabId);
         Task<decimal> GetTotalRatingsForCabAsync(int cabId);
@@ -77,6 +79,14 @@ namespace CabRatingWebApi.DataServices
         public Task DeleteReviewForCabAsync(int cabRatingId, int currentUserId)
         {
             return Task.Run(() => _cabRatingService.DeleteReviewForCab(cabRatingId, currentUserId));
+        }
+        public Task<IEnumerable<CabRating>> GetRatingsByUserAsync(int userId)
+        {
+            return _cabRatingService.GetRatingsByUserAsync(userId);
+        }
+        public Task<CabRating> GetCabRatingByCabIdAndUserIdAsync(int cabId, int userId)
+        {
+            return Task.Run(() => _cabRatingService.GetCabRatingByCabIdAndUserIdAsync(cabId, userId));
         }
     }
 }
